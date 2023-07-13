@@ -28,10 +28,8 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.google.dagger.hilt)
 
-    implementation(libs.square.moshi)
-    implementation(libs.square.moshi.converter)
-    implementation(libs.square.moshi.metadata.reflect)
-    implementation(libs.square.okhttp.logging)
+    implementation(libs.bundles.square)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.kotlinx.serialization)
     testImplementation(libs.junit)

@@ -9,6 +9,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -62,6 +64,13 @@ dependencies {
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.compose)
     implementation(platform(libs.compose.bom))
+    implementation(libs.google.dagger.hilt)
+    implementation(libs.bundles.square)
+    implementation(project(":data"))
+    implementation(project(":preferences"))
+
+    kapt(libs.androidx.room.compiler)
+    kapt(libs.google.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
     debugImplementation(libs.compose.ui.tooling)
