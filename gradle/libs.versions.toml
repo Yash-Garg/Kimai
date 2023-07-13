@@ -1,0 +1,71 @@
+[versions]
+agp = "8.0.0"
+kotlin = "1.8.22"
+core-ktx = "1.10.1"
+junit = "4.13.2"
+hilt = "2.46.1"
+activity-compose = "1.7.2"
+compose-bom = "2023.06.01"
+spotless = "6.19.0"
+serialization = "1.5.1"
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.1"
+androidx-lifecycle-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+androidx-paging = "androidx.paging:paging-runtime:3.1.1"
+androidx-security-crypto = "androidx.security:security-crypto:1.1.0-alpha06"
+androidx-security-identity = "androidx.security:security-identity-credential:1.0.0-alpha03"
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+build-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+build-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+google-dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-compiler = "androidx.compose.compiler:compiler:1.4.8"
+compose-material = "androidx.compose.material:material:1.4.3"
+compose-material-icons = "androidx.compose.material:material-icons-extended:1.4.3"
+compose-material3 = "androidx.compose.material3:material3:1.1.1"
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+square-moshi = "com.squareup.moshi:moshi-kotlin:1.14.0"
+square-moshi-converter = "com.squareup.retrofit2:converter-moshi:2.9.0"
+square-moshi-metadata-reflect = "dev.zacsweers.moshix:moshi-metadata-reflect:0.21.0"
+square-okhttp-logging = "com.squareup.okhttp3:logging-interceptor:4.11.0"
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[bundles]
+androidx = [
+    "androidx-core",
+    "androidx-core-splashscreen",
+    "androidx-lifecycle-ktx",
+    "androidx-paging",
+    "androidx-security-crypto",
+    "androidx-security-identity"
+]
+compose = [
+    "compose-activity",
+    "compose-material",
+    "compose-material-icons",
+    "compose-material3",
+    "compose-ui",
+    "compose-ui-graphics",
+    "compose-ui-tooling-preview"
+]

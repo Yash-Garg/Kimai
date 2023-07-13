@@ -1,0 +1,20 @@
+<!--
+ ~ Copyright © 2023 Yash Garg.
+ ~ Use of this source code is governed by an MIT-style
+ ~ license that can be found in the LICENSE file or at
+ ~ https://opensource.org/licenses/MIT.
+ -->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- TODO: Use <include> and <exclude> to control what is backed up.
+        <include .../>
+        <exclude .../>
+        -->
+    </cloud-backup>
+    <!--
+    <device-transfer>
+        <include .../>
+        <exclude .../>
+    </device-transfer>
+    -->
+</data-extraction-rules>
