@@ -9,8 +9,9 @@ package dev.yashgarg.kimai
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import dev.yashgarg.kimai.daos.ConfigDao
+import dev.yashgarg.kimai.models.ClientConfig
 
-@Database(version = 1, exportSchema = false)
+@Database(version = 1, entities = [ClientConfig::class], exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun configDao(): ConfigDao
 
