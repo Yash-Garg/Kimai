@@ -37,6 +37,7 @@ compose-compiler = "androidx.compose.compiler:compiler:1.4.8"
 compose-material = "androidx.compose.material:material:1.4.3"
 compose-material-icons = "androidx.compose.material:material-icons-extended:1.4.3"
 compose-material3 = "androidx.compose.material3:material3:1.1.1"
+compose-navigation = "androidx.navigation:navigation-compose:2.6.0"
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -74,6 +75,7 @@ compose = [
     "compose-material",
     "compose-material-icons",
     "compose-material3",
+    "compose-navigation",
     "compose-ui",
     "compose-ui-graphics",
     "compose-ui-tooling-preview"
