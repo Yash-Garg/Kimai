@@ -7,5 +7,11 @@
 package dev.yashgarg.kimai.daos
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import dev.yashgarg.kimai.models.InstanceConfig
 
-@Dao interface ConfigDao {}
+@Dao
+interface ConfigDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE) fun addInstance(config: InstanceConfig)
+}

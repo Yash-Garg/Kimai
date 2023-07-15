@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Dns
 import androidx.compose.material.icons.twotone.Check
 import androidx.compose.material.icons.twotone.Dns
 import androidx.compose.material.icons.twotone.Person
@@ -36,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.yashgarg.kimai.di.CommonPreview
 import dev.yashgarg.kimai.ui.common.CustomTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,4 +108,10 @@ fun AuthScreen(
       )
     }
   }
+}
+
+@CommonPreview
+@Composable
+fun AuthScreenPreview() {
+  AuthScreen(authState = AuthFormState(), onEvent = {})
 }

@@ -11,27 +11,40 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.yashgarg.kimai.daos.ConfigDao
+import dev.yashgarg.kimai.models.InstanceConfig
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor() : ViewModel() {
+class AuthViewModel @Inject constructor(private val configDao: ConfigDao) : ViewModel() {
   var state by mutableStateOf(AuthFormState())
     private set
 
   fun onEvent(event: AuthFormEvent) {
     when (event) {
       is AuthFormEvent.BaseUrlChanged -> {
-        state = state.copy(baseUrl = event.url)
+        state = state.copy(baseUrl = event.url.trim())
       }
       is AuthFormEvent.UsernameChanged -> {
-        state = state.copy(username = event.username)
+        state = state.copy(username = event.username.trim())
       }
       is AuthFormEvent.PasswordChanged -> {
-        state = state.copy(password = event.password)
+        state = state.copy(password = event.password.trim())
       }
-      AuthFormEvent.Save -> saveConfig()
+      is AuthFormEvent.Save -> saveConfig()
     }
   }
 
-  private fun saveConfig() {}
+  private fun saveConfig() {
+    val config =
+      InstanceConfig(
+        id = 0,
+        url = state.baseUrl,
+        username = state.username,
+        password = state.password,
+        isSecure = state.baseUrl.startsWith("https")
+      )
+
+    configDao.addInstance(config)
+  }
 }
