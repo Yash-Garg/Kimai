@@ -9,6 +9,8 @@ package dev.yashgarg.kimai.ui.navigation
 sealed class NavDestinations(val route: String) {
   object Landing : NavDestinations("landing")
 
+  object Auth : NavDestinations("auth")
+
   companion object {
     val startDestination
       get() = Landing

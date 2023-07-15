@@ -13,10 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.yashgarg.kimai.ui.authentication.AuthScreen
+import dev.yashgarg.kimai.ui.authentication.AuthViewModel
 import dev.yashgarg.kimai.ui.landing.LandingScreen
 import dev.yashgarg.kimai.ui.navigation.NavDestinations
 import dev.yashgarg.kimai.ui.theme.KimaiTheme
@@ -34,13 +37,19 @@ fun MainApp() {
   val navController = rememberNavController()
 
   KimaiTheme {
-    Scaffold {
+    Scaffold { paddingValues ->
       NavHost(
-        modifier = Modifier.padding(it),
+        modifier = Modifier.padding(paddingValues),
         navController = navController,
         startDestination = NavDestinations.startDestination.route
       ) {
-        composable(NavDestinations.Landing.route) { LandingScreen() }
+        composable(NavDestinations.Landing.route) {
+          LandingScreen(onGetStartedClick = { navController.navigate(NavDestinations.Auth.route) })
+        }
+        composable(NavDestinations.Auth.route) {
+          val viewModel = hiltViewModel<AuthViewModel>()
+          AuthScreen(authState = viewModel.state, onEvent = { viewModel.onEvent(it) })
+        }
       }
     }
   }
