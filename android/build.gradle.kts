@@ -66,6 +66,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.google.dagger.hilt)
     implementation(libs.bundles.square)
+    implementation(libs.accompanist.systemuicontroller)
+
     implementation(project(":data"))
     implementation(project(":preferences"))
 

@@ -21,6 +21,8 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-security-crypto = "androidx.security:security-crypto:1.1.0-alpha06"
 androidx-security-identity = "androidx.security:security-identity-credential:1.0.0-alpha03"
 
+accompanist-systemuicontroller = "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 build-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
