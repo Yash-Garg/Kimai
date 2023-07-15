@@ -6,6 +6,7 @@
  */
 package dev.yashgarg.kimai.api
 
+import dev.yashgarg.kimai.models.Activity
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -32,7 +33,7 @@ interface KimaiApi {
     @Query("orderBy") orderBy: String? = null,
     @Query("order") order: String = "ASC",
     @Query("term") searchTerm: String? = null,
-  ): Response<Any>
+  ): Response<Activity>
 
   companion object {
     const val BASE_URL = "https://demo.kimai.org/api/"
