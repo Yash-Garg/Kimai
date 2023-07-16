@@ -21,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.yashgarg.kimai.ui.authentication.AuthScreen
 import dev.yashgarg.kimai.ui.authentication.AuthViewModel
 import dev.yashgarg.kimai.ui.home.HomeScreen
-import dev.yashgarg.kimai.ui.home.HomeViewModel
 import dev.yashgarg.kimai.ui.landing.LandingScreen
 import dev.yashgarg.kimai.ui.navigation.NavDestinations
 import dev.yashgarg.kimai.ui.theme.KimaiTheme
@@ -67,10 +66,7 @@ fun MainApp() {
           )
         }
 
-        composable(NavDestinations.Home.route) {
-          val viewModel = hiltViewModel<HomeViewModel>()
-          HomeScreen(homeState = viewModel.state)
-        }
+        composable(NavDestinations.Home.route) { HomeScreen() }
       }
     }
   }

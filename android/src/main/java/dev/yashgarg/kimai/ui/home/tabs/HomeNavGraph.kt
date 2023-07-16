@@ -31,11 +31,7 @@ fun HomeNavGraph(
     navController = navController,
     startDestination = NavDestinations.Dashboard.route
   ) {
-    composable(NavDestinations.Dashboard.route) {
-      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Dashboard")
-      }
-    }
+    composable(NavDestinations.Dashboard.route) { DashboardScreen(state = viewModel.state) }
 
     composable(NavDestinations.MyTimes.route) { MyTimesScreen(state = viewModel.state) }
 

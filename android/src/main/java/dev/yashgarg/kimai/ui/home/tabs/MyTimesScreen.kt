@@ -19,36 +19,50 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.yashgarg.kimai.ui.home.ActivityState
 import dev.yashgarg.kimai.ui.home.HomeState
+import dev.yashgarg.kimai.ui.home.ProjectsState
+import dev.yashgarg.kimai.ui.home.TimesheetState
 import dev.yashgarg.kimai.ui.theme.toDateTime
 import dev.yashgarg.kimai.ui.theme.toTime
 
 @Composable
 fun MyTimesScreen(state: HomeState) {
   Box(modifier = Modifier.fillMaxSize()) {
-    if (!state.timesheets.isNullOrEmpty() && !state.isLoading) {
-      LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(state.timesheets) { sheet ->
-          val activityName =
-            state.activity?.find { it.id.toInt() == sheet.activity }?.name ?: "Unknown"
+    when (state.timesheetState) {
+      is TimesheetState.Loading -> {}
+      is TimesheetState.Error -> {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+          Text(text = "Error: ${state.timesheetState.message}")
+        }
+      }
+      is TimesheetState.Success -> {
+        val timesheets = state.timesheetState.timesheets
+        val activity = (state.activityState as? ActivityState.Success)?.activities
+        val projects = (state.projectsState as? ProjectsState.Success)?.projects
 
-          val projectName =
-            state.projects?.find { it.id.toInt() == sheet.project }?.name ?: "Unknown"
+        if (timesheets.isEmpty()) {
+          Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(text = "No timesheets found")
+          }
+        } else {
+          LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(timesheets) { sheet ->
+              val activityName =
+                activity?.find { it.id.toInt() == sheet.activity }?.name ?: "Unknown"
 
-          Card(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-            Column(modifier = Modifier.fillMaxSize().padding(12.dp)) {
-              Text(text = "$projectName - $activityName")
-              Text(text = sheet.begin.toDateTime())
-              Text(text = sheet.duration.toTime())
+              val projectName = projects?.find { it.id.toInt() == sheet.project }?.name ?: "Unknown"
+
+              Card(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+                Column(modifier = Modifier.fillMaxSize().padding(12.dp)) {
+                  Text(text = "$projectName - $activityName")
+                  Text(text = sheet.begin.toDateTime())
+                  Text(text = sheet.duration.toTime())
+                }
+              }
             }
           }
         }
-      }
-    }
-
-    if (state.timesheets.isNullOrEmpty() && !state.isLoading) {
-      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "No timesheets found")
       }
     }
   }

@@ -12,9 +12,31 @@ import dev.yashgarg.kimai.models.TimesheetActivity
 
 @Keep
 data class HomeState(
-  val isLoading: Boolean = true,
-  val error: String? = null,
-  val activity: List<Activity>? = null,
-  val projects: List<Activity>? = null,
-  val timesheets: List<TimesheetActivity>? = null,
+  val activityState: ActivityState = ActivityState.Loading,
+  val projectsState: ProjectsState = ProjectsState.Loading,
+  val timesheetState: TimesheetState = TimesheetState.Loading,
 )
+
+sealed class ActivityState {
+  object Loading : ActivityState()
+
+  data class Success(val activities: List<Activity>) : ActivityState()
+
+  data class Error(val message: String) : ActivityState()
+}
+
+sealed class ProjectsState {
+  object Loading : ProjectsState()
+
+  data class Success(val projects: List<Activity>) : ProjectsState()
+
+  data class Error(val message: String) : ProjectsState()
+}
+
+sealed class TimesheetState {
+  object Loading : TimesheetState()
+
+  data class Success(val timesheets: List<TimesheetActivity>) : TimesheetState()
+
+  data class Error(val message: String) : TimesheetState()
+}

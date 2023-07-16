@@ -43,15 +43,15 @@ constructor(
     state =
       when (result) {
         is ApiSuccess -> {
-          state.copy(isLoading = false, projects = result.data, error = null)
+          state.copy(projectsState = ProjectsState.Success(result.data))
         }
         is ApiError -> {
           Log.e("HomeViewModel", result.message ?: "Unknown error")
-          state.copy(isLoading = false, error = result.message ?: "Unknown error")
+          state.copy(projectsState = ProjectsState.Error(result.message ?: "Unknown error"))
         }
         is ApiException -> {
           Log.e("HomeViewModel", result.e.toString())
-          state.copy(isLoading = false, error = result.e.toString())
+          state.copy(projectsState = ProjectsState.Error(result.e.toString()))
         }
       }
   }
@@ -62,15 +62,15 @@ constructor(
     state =
       when (result) {
         is ApiSuccess -> {
-          state.copy(isLoading = false, activity = result.data, error = null)
+          state.copy(activityState = ActivityState.Success(result.data))
         }
         is ApiError -> {
           Log.e("HomeViewModel", result.message ?: "Unknown error")
-          state.copy(isLoading = false, error = result.message ?: "Unknown error")
+          state.copy(activityState = ActivityState.Error(result.message ?: "Unknown error"))
         }
         is ApiException -> {
           Log.e("HomeViewModel", result.e.toString())
-          state.copy(isLoading = false, error = result.e.toString())
+          state.copy(activityState = ActivityState.Error(result.e.toString()))
         }
       }
   }
@@ -81,15 +81,15 @@ constructor(
     state =
       when (result) {
         is ApiSuccess -> {
-          state.copy(isLoading = false, timesheets = result.data, error = null)
+          state.copy(timesheetState = TimesheetState.Success(result.data))
         }
         is ApiError -> {
           Log.e("HomeViewModel", result.message ?: "Unknown error")
-          state.copy(isLoading = false, error = result.message ?: "Unknown error")
+          state.copy(timesheetState = TimesheetState.Error(result.message ?: "Unknown error"))
         }
         is ApiException -> {
           Log.e("HomeViewModel", result.e.toString())
-          state.copy(isLoading = false, error = result.e.toString())
+          state.copy(timesheetState = TimesheetState.Error(result.e.toString()))
         }
       }
   }
