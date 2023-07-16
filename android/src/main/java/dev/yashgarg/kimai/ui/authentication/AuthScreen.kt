@@ -114,7 +114,7 @@ fun AuthScreen(
         isError = authState.usernameError,
         trailingIcon = { Icon(imageVector = Icons.TwoTone.Person, contentDescription = null) },
         onValueChange = { onEvent(AuthFormEvent.UsernameChanged(it)) },
-        label = "Username",
+        label = "Username / Email",
       )
       CustomTextField(
         modifier = Modifier.fillMaxWidth(),

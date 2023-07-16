@@ -11,10 +11,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.yashgarg.kimai.HostSelectionInterceptor
 import dev.yashgarg.kimai.api.KimaiApi
 import dev.yashgarg.kimai.api.KimaiRepository
 import dev.yashgarg.kimai.api.KimaiRepositoryImpl
+import dev.yashgarg.kimai.util.HostSelectionInterceptor
 import dev.zacsweers.moshix.reflect.MetadataKotlinJsonAdapterFactory
 import javax.inject.Singleton
 import kotlinx.coroutines.MainScope

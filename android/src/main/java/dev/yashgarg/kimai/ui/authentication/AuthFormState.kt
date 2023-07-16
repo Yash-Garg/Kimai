@@ -10,6 +10,7 @@ import androidx.annotation.Keep
 
 @Keep
 data class AuthFormState(
+  val isAuthenticated: Boolean = false,
   val baseUrl: String = "",
   val baseUrlError: Boolean = false,
   val username: String = "",

@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
-package dev.yashgarg.kimai
+package dev.yashgarg.kimai.util
 
 import java.io.IOException
 import okhttp3.HttpUrl

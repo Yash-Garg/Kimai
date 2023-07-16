@@ -12,13 +12,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.yashgarg.kimai.HostSelectionInterceptor
 import dev.yashgarg.kimai.api.KimaiRepository
 import dev.yashgarg.kimai.daos.ConfigDao
 import dev.yashgarg.kimai.models.InstanceConfig
 import dev.yashgarg.kimai.util.ApiError
 import dev.yashgarg.kimai.util.ApiException
 import dev.yashgarg.kimai.util.ApiSuccess
+import dev.yashgarg.kimai.util.HostSelectionInterceptor
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,6 +40,21 @@ constructor(
 
   private val _event = MutableSharedFlow<ValidationEvent>()
   val event: SharedFlow<ValidationEvent> = _event.asSharedFlow()
+
+  init {
+    checkForExistingConfig()
+  }
+
+  private fun checkForExistingConfig() {
+    viewModelScope.launch {
+      val config = withContext(Dispatchers.IO) { configDao.getConfigAtIndex() }
+
+      if (config != null) {
+        interceptor.setHost("${config.url}/api/")
+        state = state.copy(isAuthenticated = true)
+      }
+    }
+  }
 
   fun onEvent(event: AuthFormEvent) {
     when (event) {

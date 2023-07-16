@@ -45,10 +45,18 @@ fun MainApp() {
         startDestination = NavDestinations.startDestination.route
       ) {
         composable(NavDestinations.Landing.route) {
-          LandingScreen(onGetStartedClick = { navController.navigate(NavDestinations.Auth.route) })
+          val isAuthenticated = hiltViewModel<AuthViewModel>().state.isAuthenticated
+          if (isAuthenticated) {
+            navController.navigate(NavDestinations.Home.route) { popUpTo(0) }
+          } else {
+            LandingScreen(
+              onGetStartedClick = { navController.navigate(NavDestinations.Auth.route) }
+            )
+          }
         }
         composable(NavDestinations.Auth.route) {
           val viewModel = hiltViewModel<AuthViewModel>()
+
           AuthScreen(
             authState = viewModel.state,
             validationEvent = viewModel.event,

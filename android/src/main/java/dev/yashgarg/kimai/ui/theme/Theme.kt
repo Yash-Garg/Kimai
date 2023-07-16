@@ -57,7 +57,10 @@ fun KimaiTheme(
 
   systemUiController.apply {
     setStatusBarColor(color = colorScheme.background, darkIcons = !darkTheme)
-    setNavigationBarColor(color = colorScheme.background, darkIcons = !darkTheme)
+    setNavigationBarColor(
+      color = colorScheme.surfaceColorAtNavigationBarElevation(),
+      darkIcons = !darkTheme
+    )
   }
 
   MaterialTheme(colorScheme = colorScheme, typography = Typography, content = content)
