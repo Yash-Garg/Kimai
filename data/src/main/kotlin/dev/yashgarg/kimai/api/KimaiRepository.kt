@@ -32,4 +32,13 @@ interface KimaiRepository {
     orderBy: String? = null,
     order: String? = null,
   ): ApiResult<List<TimesheetActivity>>
+
+  suspend fun createTimeSheet(
+    begin: String,
+    end: String? = null,
+    description: String? = null,
+    tags: List<String>? = null,
+    project: Int? = null,
+    activity: Int? = null,
+  ): ApiResult<TimesheetActivity>
 }

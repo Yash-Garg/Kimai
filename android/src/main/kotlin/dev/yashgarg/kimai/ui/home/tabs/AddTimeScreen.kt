@@ -88,6 +88,7 @@ fun AddTimeScreen(
   ) { values ->
     Column(modifier = Modifier.fillMaxSize().padding(values).padding(horizontal = 16.dp)) {
       CustomTextField(
+        hideKeyboard = true,
         modifier = Modifier.fillMaxWidth(),
         label = "Date",
         value = requireNotNull(datePickerState.selectedDateMillis).toDate(),
@@ -100,6 +101,7 @@ fun AddTimeScreen(
         onValueChange = { _ -> },
       )
       CustomTextField(
+        hideKeyboard = true,
         modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
         label = "Start Time",
         value = "${timePickerState.hour}:${timePickerState.minute}",
@@ -111,7 +113,10 @@ fun AddTimeScreen(
         readOnly = true,
         onValueChange = { _ -> },
       )
-      DropDownTextField(options = listOf("Option 1", "Option 2", "Option 3"))
+      DropDownTextField(
+        title = "Customer",
+        options = listOf("Option 1", "Option 2", "Option 3"),
+      )
     }
 
     if (showDatePicker) {

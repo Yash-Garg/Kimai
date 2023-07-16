@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownTextField(
+  title: String,
   options: List<String>,
 ) {
   var expanded by remember { mutableStateOf(false) }
@@ -34,9 +35,10 @@ fun DropDownTextField(
     CustomTextField(
       modifier = Modifier.menuAnchor().fillMaxWidth(),
       readOnly = true,
+      hideKeyboard = true,
       value = selectedOptionText,
       onValueChange = {},
-      label = "Customer",
+      label = title,
       trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
     )
     ExposedDropdownMenu(

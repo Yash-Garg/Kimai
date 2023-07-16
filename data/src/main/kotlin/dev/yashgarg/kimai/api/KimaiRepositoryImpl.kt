@@ -24,14 +24,44 @@ class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : Kimai
     orderBy: String?,
     order: String,
     searchTerm: String?
-  ): ApiResult<List<Activity>> = handleApi { api.getActivities() }
+  ): ApiResult<List<Activity>> = handleApi {
+    api.getActivities(
+      projectId = projectId,
+      projects = projects,
+      visible = visible,
+      globals = globals,
+      orderBy = orderBy,
+      order = order,
+      searchTerm = searchTerm
+    )
+  }
 
   override suspend fun getProjects(visible: Int): ApiResult<List<Activity>> = handleApi {
-    api.getProjects()
+    api.getProjects(visible = visible)
   }
 
   override suspend fun getTimeSheets(
     orderBy: String?,
     order: String?
-  ): ApiResult<List<TimesheetActivity>> = handleApi { api.getTimesheets() }
+  ): ApiResult<List<TimesheetActivity>> = handleApi {
+    api.getTimesheets(orderBy = orderBy, order = order)
+  }
+
+  override suspend fun createTimeSheet(
+    begin: String,
+    end: String?,
+    description: String?,
+    tags: List<String>?,
+    project: Int?,
+    activity: Int?
+  ): ApiResult<TimesheetActivity> = handleApi {
+    api.createTimesheet(
+      begin = begin,
+      end = end,
+      description = description,
+      tags = tags,
+      project = project,
+      activity = activity
+    )
+  }
 }

@@ -11,6 +11,7 @@ import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.models.TimesheetActivity
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface KimaiApi {
@@ -42,6 +43,17 @@ interface KimaiApi {
     @Query("orderBy") orderBy: String? = null,
     @Query("order") order: String? = null,
   ): Response<List<TimesheetActivity>>
+
+  @POST("timesheets")
+  /** Creates a new timesheet record */
+  suspend fun createTimesheet(
+    @Query("begin") begin: String,
+    @Query("end") end: String? = null,
+    @Query("description") description: String? = null,
+    @Query("tags") tags: List<String>? = null,
+    @Query("project") project: Int? = null,
+    @Query("activity") activity: Int? = null,
+  ): Response<TimesheetActivity>
 
   companion object {
     const val BASE_URL = "https://demo.kimai.org/api/"
