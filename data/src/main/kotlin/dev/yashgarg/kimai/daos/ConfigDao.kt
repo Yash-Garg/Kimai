@@ -18,4 +18,6 @@ interface ConfigDao {
 
   @Query("SELECT * FROM instances WHERE config_id = :index")
   fun getConfigAtIndex(index: Int = 0): InstanceConfig?
+
+  @Query("DELETE FROM instances") fun deleteAll()
 }

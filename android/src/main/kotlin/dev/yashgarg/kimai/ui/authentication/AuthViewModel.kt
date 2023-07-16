@@ -46,6 +46,8 @@ constructor(
     checkForExistingConfig()
   }
 
+  fun logout() = viewModelScope.launch { withContext(Dispatchers.IO) { configDao.deleteAll() } }
+
   private fun checkForExistingConfig() {
     viewModelScope.launch {
       val config = withContext(Dispatchers.IO) { configDao.getConfigAtIndex() }

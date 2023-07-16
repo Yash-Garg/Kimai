@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp() {
   val navController = rememberNavController()
+  val authViewModel = hiltViewModel<AuthViewModel>()
 
   KimaiTheme {
     Scaffold { paddingValues ->
@@ -57,19 +58,23 @@ fun MainApp() {
         }
 
         composable(NavDestinations.Auth.route) {
-          val viewModel = hiltViewModel<AuthViewModel>()
-
           AuthScreen(
-            authState = viewModel.state,
-            validationEvent = viewModel.event,
-            onEvent = { viewModel.onEvent(it) },
+            authState = authViewModel.state,
+            validationEvent = authViewModel.event,
+            onEvent = { authViewModel.onEvent(it) },
             onSuccess = { navController.navigate(NavDestinations.Home.route) { popUpTo(0) } },
             onPop = { navController.popBackStack() }
           )
         }
 
         composable(NavDestinations.Home.route) {
-          HomeScreen(onAddTimeClick = { navController.navigate(NavDestinations.AddTime.route) })
+          HomeScreen(
+            onAddTimeClick = { navController.navigate(NavDestinations.AddTime.route) },
+            onLogoutClick = {
+              authViewModel.logout()
+              navController.navigate(NavDestinations.Landing.route) { popUpTo(0) }
+            }
+          )
         }
 
         composable(NavDestinations.AddTime.route) {
