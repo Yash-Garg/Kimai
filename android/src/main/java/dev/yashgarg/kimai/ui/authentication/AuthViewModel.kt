@@ -19,6 +19,7 @@ import dev.yashgarg.kimai.util.ApiError
 import dev.yashgarg.kimai.util.ApiException
 import dev.yashgarg.kimai.util.ApiSuccess
 import dev.yashgarg.kimai.util.HostSelectionInterceptor
+import dev.yashgarg.kimai.util.setValues
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -50,15 +51,7 @@ constructor(
       val config = withContext(Dispatchers.IO) { configDao.getConfigAtIndex() }
 
       if (config != null) {
-        interceptor.apply {
-          setHost("${config.url}/api/")
-          setHeaderMap(
-            mapOf(
-              "X-AUTH-USER" to config.username,
-              "X-AUTH-TOKEN" to config.apiToken,
-            )
-          )
-        }
+        interceptor.setValues(config.url, config.username, config.apiToken)
         state = state.copy(isAuthenticated = true)
       }
     }
@@ -108,23 +101,13 @@ constructor(
           isSecure = true,
         )
 
-      interceptor.apply {
-        setHost("${config.url}/api/")
-        setHeaderMap(
-          mapOf(
-            "X-AUTH-USER" to config.username,
-            "X-AUTH-TOKEN" to config.apiToken,
-          )
-        )
-      }
+      interceptor.setValues(config.url, config.username, config.apiToken)
       viewModelScope.launch { validateCredentials(config) }
     }
   }
 
-  private suspend fun validateCredentials(config: InstanceConfig) {
-    val result = repository.ping()
-
-    when (result) {
+  private suspend fun validateCredentials(config: InstanceConfig) =
+    when (val result = repository.ping()) {
       is ApiSuccess -> {
         _event.emit(ValidationEvent.Success)
         withContext(Dispatchers.IO) { configDao.addInstance(config) }
@@ -136,7 +119,6 @@ constructor(
         _event.emit(ValidationEvent.Failure(result.e.message ?: "Unknown error"))
       }
     }
-  }
 
   sealed class ValidationEvent {
     class Failure(val msg: String) : ValidationEvent()

@@ -49,3 +49,13 @@ class HostSelectionInterceptor : Interceptor {
     return chain.proceed(request)
   }
 }
+
+fun HostSelectionInterceptor.setValues(host: String, username: String, apiToken: String) {
+  this.setHost(host)
+  this.setHeaderMap(
+    mapOf(
+      "X-AUTH-USER" to username,
+      "X-AUTH-TOKEN" to apiToken,
+    )
+  )
+}
