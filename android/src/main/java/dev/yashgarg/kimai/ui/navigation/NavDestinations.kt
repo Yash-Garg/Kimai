@@ -13,6 +13,12 @@ sealed class NavDestinations(val route: String) {
 
   object Home : NavDestinations("home")
 
+  object Dashboard : NavDestinations("dashboard")
+
+  object MyTimes : NavDestinations("my-times")
+
+  object Calendar : NavDestinations("calendar")
+
   companion object {
     val startDestination
       get() = Landing

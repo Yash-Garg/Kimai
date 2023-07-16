@@ -55,6 +55,7 @@ fun MainApp() {
             )
           }
         }
+
         composable(NavDestinations.Auth.route) {
           val viewModel = hiltViewModel<AuthViewModel>()
 
@@ -65,6 +66,7 @@ fun MainApp() {
             onSuccess = { navController.navigate(NavDestinations.Home.route) }
           )
         }
+
         composable(NavDestinations.Home.route) {
           val viewModel = hiltViewModel<HomeViewModel>()
           HomeScreen(homeState = viewModel.state)
