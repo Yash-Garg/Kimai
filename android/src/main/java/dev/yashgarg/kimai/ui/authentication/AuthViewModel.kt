@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.yashgarg.kimai.HostSelectionInterceptor
 import dev.yashgarg.kimai.api.KimaiRepository
 import dev.yashgarg.kimai.daos.ConfigDao
 import dev.yashgarg.kimai.models.InstanceConfig
@@ -32,6 +33,7 @@ class AuthViewModel
 constructor(
   private val configDao: ConfigDao,
   private val repository: KimaiRepository,
+  private val interceptor: HostSelectionInterceptor,
 ) : ViewModel() {
   var state by mutableStateOf(AuthFormState())
     private set
@@ -83,6 +85,7 @@ constructor(
           isSecure = true,
         )
 
+      interceptor.setHost("${config.url}/api/")
       viewModelScope.launch { validateCredentials(config) }
     }
   }
