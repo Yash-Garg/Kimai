@@ -12,14 +12,14 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 data class Activity(
-  val parentTitle: String,
-  val project: Long,
+  val parentTitle: String? = null,
+  val project: Long? = null,
   val id: Long,
   val name: String,
-  val comment: String,
+  val comment: String? = null,
   val visible: Boolean,
   val billable: Boolean,
   val metaFields: List<MetaField>,
   val teams: List<Team>,
-  val color: String
+  val color: String? = null
 )

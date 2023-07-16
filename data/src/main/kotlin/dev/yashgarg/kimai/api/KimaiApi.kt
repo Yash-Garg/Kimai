@@ -10,15 +10,12 @@ import dev.yashgarg.kimai.models.Activity
 import dev.yashgarg.kimai.models.Ping
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.HeaderMap
 import retrofit2.http.Query
 
 interface KimaiApi {
   @GET("ping")
   /** A simple route that returns a 'pong', which you can use for testing the API */
-  suspend fun ping(
-    @HeaderMap authHeaders: Map<String, String>,
-  ): Response<Ping>
+  suspend fun ping(): Response<Ping>
 
   @GET("activities")
   /**
@@ -41,7 +38,7 @@ interface KimaiApi {
     @Query("orderBy") orderBy: String? = null,
     @Query("order") order: String = "ASC",
     @Query("term") searchTerm: String? = null,
-  ): Response<Activity>
+  ): Response<List<Activity>>
 
   companion object {
     const val BASE_URL = "https://demo.kimai.org/api/"

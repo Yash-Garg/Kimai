@@ -13,9 +13,7 @@ import dev.yashgarg.kimai.util.handleApi
 import javax.inject.Inject
 
 class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : KimaiRepository {
-  override suspend fun ping(
-    authHeaders: Map<String, String>,
-  ): ApiResult<Ping> = handleApi { api.ping(authHeaders) }
+  override suspend fun ping(): ApiResult<Ping> = handleApi { api.ping() }
 
   override suspend fun getActivities(
     projectId: Int?,
@@ -25,5 +23,5 @@ class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : Kimai
     orderBy: String?,
     order: String,
     searchTerm: String?
-  ): ApiResult<Activity> = handleApi { TODO("Not yet implemented") }
+  ): ApiResult<List<Activity>> = handleApi { api.getActivities() }
 }

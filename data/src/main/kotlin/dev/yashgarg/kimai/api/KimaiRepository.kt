@@ -11,9 +11,7 @@ import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.util.ApiResult
 
 interface KimaiRepository {
-  suspend fun ping(
-    authHeaders: Map<String, String>,
-  ): ApiResult<Ping>
+  suspend fun ping(): ApiResult<Ping>
 
   suspend fun getActivities(
     projectId: Int? = null,
@@ -23,5 +21,5 @@ interface KimaiRepository {
     orderBy: String? = null,
     order: String = "ASC",
     searchTerm: String? = null,
-  ): ApiResult<Activity>
+  ): ApiResult<List<Activity>>
 }

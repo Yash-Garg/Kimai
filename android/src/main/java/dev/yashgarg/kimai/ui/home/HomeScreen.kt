@@ -6,35 +6,48 @@
  */
 package dev.yashgarg.kimai.ui.home
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.Logout
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.yashgarg.kimai.di.CommonPreview
 import dev.yashgarg.kimai.ui.navigation.HomeNavItems
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(homeState: HomeState) {
   var selectedItem by remember { mutableIntStateOf(0) }
+  val pullRefreshState = rememberPullRefreshState(homeState.isLoading, {})
 
   Scaffold(
     topBar = {
@@ -70,6 +83,26 @@ fun HomeScreen() {
       )
     }
   ) { values ->
-    Column(modifier = Modifier.padding(values)) {}
+    Box(modifier = Modifier.fillMaxSize().padding(values).pullRefresh(pullRefreshState)) {
+      if (homeState.activity != null && !homeState.isLoading) {
+        LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+          items(homeState.activity) { activity -> Text(text = activity.name) }
+        }
+      }
+
+      PullRefreshIndicator(
+        refreshing = homeState.isLoading,
+        state = pullRefreshState,
+        modifier = Modifier.align(Alignment.TopCenter),
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        contentColor = contentColorFor(MaterialTheme.colorScheme.surface),
+      )
+    }
   }
+}
+
+@CommonPreview
+@Composable
+fun HomeScreenPreview() {
+  HomeScreen(HomeState(activity = null, isLoading = true))
 }

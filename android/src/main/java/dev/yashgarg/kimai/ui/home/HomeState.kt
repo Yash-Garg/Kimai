@@ -7,8 +7,11 @@
 package dev.yashgarg.kimai.ui.home
 
 import androidx.annotation.Keep
+import dev.yashgarg.kimai.models.Activity
 
 @Keep
 data class HomeState(
   val isLoading: Boolean = true,
+  val error: String? = null,
+  val activity: List<Activity>? = null,
 )

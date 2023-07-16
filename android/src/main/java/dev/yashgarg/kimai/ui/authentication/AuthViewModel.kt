@@ -50,7 +50,15 @@ constructor(
       val config = withContext(Dispatchers.IO) { configDao.getConfigAtIndex() }
 
       if (config != null) {
-        interceptor.setHost("${config.url}/api/")
+        interceptor.apply {
+          setHost("${config.url}/api/")
+          setHeaderMap(
+            mapOf(
+              "X-AUTH-USER" to config.username,
+              "X-AUTH-TOKEN" to config.apiToken,
+            )
+          )
+        }
         state = state.copy(isAuthenticated = true)
       }
     }
@@ -100,20 +108,21 @@ constructor(
           isSecure = true,
         )
 
-      interceptor.setHost("${config.url}/api/")
+      interceptor.apply {
+        setHost("${config.url}/api/")
+        setHeaderMap(
+          mapOf(
+            "X-AUTH-USER" to config.username,
+            "X-AUTH-TOKEN" to config.apiToken,
+          )
+        )
+      }
       viewModelScope.launch { validateCredentials(config) }
     }
   }
 
   private suspend fun validateCredentials(config: InstanceConfig) {
-    val result =
-      repository.ping(
-        authHeaders =
-          mapOf(
-            "X-AUTH-USER" to config.username,
-            "X-AUTH-TOKEN" to config.apiToken,
-          )
-      )
+    val result = repository.ping()
 
     when (result) {
       is ApiSuccess -> {

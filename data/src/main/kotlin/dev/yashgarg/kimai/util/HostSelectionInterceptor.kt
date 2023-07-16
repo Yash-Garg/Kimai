@@ -16,21 +16,36 @@ import okhttp3.Response
 
 class HostSelectionInterceptor : Interceptor {
   @Volatile private var host: String? = null
+  @Volatile private var headerMap: Map<String, String>? = null
 
   fun setHost(host: String?) {
     this.host = host?.toHttpUrlOrNull()?.host
   }
 
+  fun setHeaderMap(headerMap: Map<String, String>?) {
+    this.headerMap = headerMap
+  }
+
   @Throws(IOException::class)
   override fun intercept(chain: Chain): Response {
     var request: Request = chain.request()
-    val host = host
 
+    val host = host
+    val headers = headerMap
+
+    val builder = request.newBuilder()
     if (host != null) {
       val newUrl: HttpUrl = request.url.newBuilder().host(host).build()
-      request = request.newBuilder().url(newUrl).build()
+      builder.url(newUrl)
     }
 
+    if (headerMap != null) {
+      for ((key, value) in headers!!) {
+        builder.addHeader(key, value)
+      }
+    }
+
+    request = builder.build()
     return chain.proceed(request)
   }
 }

@@ -14,9 +14,9 @@ import kotlinx.serialization.Serializable
 data class Team(
   val id: Long,
   val name: String,
-  val members: List<Member>,
-  val customers: List<ActivityInner>,
-  val projects: List<ActivityInner>,
-  val activities: List<ActivityInner>,
+  val members: List<Member>? = null,
+  val customers: List<ActivityInner>? = null,
+  val projects: List<ActivityInner>? = null,
+  val activities: List<ActivityInner>? = null,
   val color: String
 )
