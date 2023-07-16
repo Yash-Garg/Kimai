@@ -8,6 +8,7 @@ package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
 import dev.yashgarg.kimai.models.Ping
+import dev.yashgarg.kimai.models.TimesheetActivity
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,18 +19,7 @@ interface KimaiApi {
   suspend fun ping(): Response<Ping>
 
   @GET("activities")
-  /**
-   * Returns a collection of activities (which are visible to the user)
-   *
-   * @param projectId Project ID to filter activities
-   * @param projects List of project IDs to filter activities
-   * @param visible Visibility status to filter activities: 1=visible, 2=hidden, 3=all
-   * @param globals Use if you want to fetch only global activities. Allowed values: true
-   * @param orderBy The field by which results will be ordered. Allowed values: id, name, project
-   * @param order The result order. Allowed values: ASC, DESC
-   * @param searchTerm Free search term
-   * @return A collection of activities
-   */
+  /** Returns a collection of activities (which are visible to the user) */
   suspend fun getActivities(
     @Query("project") projectId: Int? = null,
     @Query("projects") projects: List<Int> = emptyList(),
@@ -39,6 +29,19 @@ interface KimaiApi {
     @Query("order") order: String = "ASC",
     @Query("term") searchTerm: String? = null,
   ): Response<List<Activity>>
+
+  @GET("projects")
+  /** Returns a collection of projects (which are visible to the user) */
+  suspend fun getProjects(
+    @Query("visible") visible: Int = 1,
+  ): Response<List<Activity>>
+
+  @GET("timesheets")
+  /** Returns a collection of timesheet records (which are visible to the user) */
+  suspend fun getTimesheets(
+    @Query("orderBy") orderBy: String? = null,
+    @Query("order") order: String? = null,
+  ): Response<List<TimesheetActivity>>
 
   companion object {
     const val BASE_URL = "https://demo.kimai.org/api/"

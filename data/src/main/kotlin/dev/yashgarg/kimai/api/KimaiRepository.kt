@@ -8,6 +8,7 @@ package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
 import dev.yashgarg.kimai.models.Ping
+import dev.yashgarg.kimai.models.TimesheetActivity
 import dev.yashgarg.kimai.util.ApiResult
 
 interface KimaiRepository {
@@ -22,4 +23,13 @@ interface KimaiRepository {
     order: String = "ASC",
     searchTerm: String? = null,
   ): ApiResult<List<Activity>>
+
+  suspend fun getProjects(
+    visible: Int = 1,
+  ): ApiResult<List<Activity>>
+
+  suspend fun getTimeSheets(
+    orderBy: String? = null,
+    order: String? = null,
+  ): ApiResult<List<TimesheetActivity>>
 }

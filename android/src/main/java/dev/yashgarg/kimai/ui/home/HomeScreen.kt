@@ -27,14 +27,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import dev.yashgarg.kimai.di.CommonPreview
+import dev.yashgarg.kimai.ui.home.tabs.HomeNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -65,13 +65,9 @@ fun HomeScreen(homeState: HomeState) {
       }
     }
   ) { values ->
-    HomeNavGraph(
-      modifier = Modifier.fillMaxSize().padding(values),
-      navController = innerNavController,
-    )
     Box(modifier = Modifier.fillMaxSize().padding(values).pullRefresh(pullRefreshState)) {
       HomeNavGraph(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         navController = innerNavController,
       )
 

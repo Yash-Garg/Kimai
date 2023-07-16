@@ -8,6 +8,7 @@ package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
 import dev.yashgarg.kimai.models.Ping
+import dev.yashgarg.kimai.models.TimesheetActivity
 import dev.yashgarg.kimai.util.ApiResult
 import dev.yashgarg.kimai.util.handleApi
 import javax.inject.Inject
@@ -24,4 +25,13 @@ class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : Kimai
     order: String,
     searchTerm: String?
   ): ApiResult<List<Activity>> = handleApi { api.getActivities() }
+
+  override suspend fun getProjects(visible: Int): ApiResult<List<Activity>> = handleApi {
+    api.getProjects()
+  }
+
+  override suspend fun getTimeSheets(
+    orderBy: String?,
+    order: String?
+  ): ApiResult<List<TimesheetActivity>> = handleApi { api.getTimesheets() }
 }

@@ -30,27 +30,67 @@ constructor(
     private set
 
   init {
-    viewModelScope.launch { loadActivities() }
+    viewModelScope.launch {
+      loadActivities()
+      loadProjects()
+      loadTimeSheets()
+    }
+  }
+
+  private suspend fun loadProjects() {
+    val result = repository.getProjects()
+
+    state =
+      when (result) {
+        is ApiSuccess -> {
+          state.copy(isLoading = false, projects = result.data, error = null)
+        }
+        is ApiError -> {
+          Log.e("HomeViewModel", result.message ?: "Unknown error")
+          state.copy(isLoading = false, error = result.message ?: "Unknown error")
+        }
+        is ApiException -> {
+          Log.e("HomeViewModel", result.e.toString())
+          state.copy(isLoading = false, error = result.e.toString())
+        }
+      }
   }
 
   private suspend fun loadActivities() {
-    viewModelScope.launch {
-      val result = repository.getActivities()
+    val result = repository.getActivities()
 
-      state =
-        when (result) {
-          is ApiSuccess -> {
-            state.copy(isLoading = false, activity = result.data, error = null)
-          }
-          is ApiError -> {
-            Log.e("HomeViewModel", result.message ?: "Unknown error")
-            state.copy(isLoading = false, error = result.message ?: "Unknown error")
-          }
-          is ApiException -> {
-            Log.e("HomeViewModel", result.e.toString())
-            state.copy(isLoading = false, error = result.e.toString())
-          }
+    state =
+      when (result) {
+        is ApiSuccess -> {
+          state.copy(isLoading = false, activity = result.data, error = null)
         }
-    }
+        is ApiError -> {
+          Log.e("HomeViewModel", result.message ?: "Unknown error")
+          state.copy(isLoading = false, error = result.message ?: "Unknown error")
+        }
+        is ApiException -> {
+          Log.e("HomeViewModel", result.e.toString())
+          state.copy(isLoading = false, error = result.e.toString())
+        }
+      }
+  }
+
+  private suspend fun loadTimeSheets() {
+    val result = repository.getTimeSheets()
+
+    state =
+      when (result) {
+        is ApiSuccess -> {
+          state.copy(isLoading = false, timesheets = result.data, error = null)
+        }
+        is ApiError -> {
+          Log.e("HomeViewModel", result.message ?: "Unknown error")
+          state.copy(isLoading = false, error = result.message ?: "Unknown error")
+        }
+        is ApiException -> {
+          Log.e("HomeViewModel", result.e.toString())
+          state.copy(isLoading = false, error = result.e.toString())
+        }
+      }
   }
 }
