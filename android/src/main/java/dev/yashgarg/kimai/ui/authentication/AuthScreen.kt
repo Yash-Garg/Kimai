@@ -54,6 +54,7 @@ fun AuthScreen(
   validationEvent: SharedFlow<ValidationEvent>,
   onEvent: (AuthFormEvent) -> Unit,
   onSuccess: () -> Unit,
+  onPop: () -> Unit,
 ) {
   val context = LocalContext.current
   var tokenHidden by rememberSaveable { mutableStateOf(true) }
@@ -84,7 +85,7 @@ fun AuthScreen(
           )
         },
         navigationIcon = {
-          IconButton(onClick = {}) {
+          IconButton(onClick = onPop) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
           }
         }
@@ -143,6 +144,7 @@ fun AuthScreenPreview() {
     authState = AuthFormState(),
     validationEvent = MutableSharedFlow(),
     onEvent = {},
-    onSuccess = {}
+    onSuccess = {},
+    onPop = {},
   )
 }

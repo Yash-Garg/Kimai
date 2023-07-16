@@ -63,7 +63,8 @@ fun MainApp() {
             authState = viewModel.state,
             validationEvent = viewModel.event,
             onEvent = { viewModel.onEvent(it) },
-            onSuccess = { navController.navigate(NavDestinations.Home.route) }
+            onSuccess = { navController.navigate(NavDestinations.Home.route) { popUpTo(0) } },
+            onPop = { navController.popBackStack() }
           )
         }
 
@@ -71,7 +72,9 @@ fun MainApp() {
           HomeScreen(onAddTimeClick = { navController.navigate(NavDestinations.AddTime.route) })
         }
 
-        composable(NavDestinations.AddTime.route) { AddTimeScreen() }
+        composable(NavDestinations.AddTime.route) {
+          AddTimeScreen(onPop = { navController.popBackStack() })
+        }
       }
     }
   }

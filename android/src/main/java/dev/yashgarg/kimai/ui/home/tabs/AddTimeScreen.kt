@@ -42,12 +42,15 @@ import androidx.compose.ui.unit.sp
 import dev.yashgarg.kimai.di.CommonPreview
 import dev.yashgarg.kimai.toDate
 import dev.yashgarg.kimai.ui.common.CustomTextField
+import dev.yashgarg.kimai.ui.common.DropDownTextField
 import dev.yashgarg.kimai.ui.common.TimePickerDialog
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddTimeScreen() {
+fun AddTimeScreen(
+  onPop: () -> Unit,
+) {
   var showDatePicker by remember { mutableStateOf(false) }
   var showTimePicker by remember { mutableStateOf(false) }
   val datePickerState =
@@ -73,9 +76,7 @@ fun AddTimeScreen() {
           )
         },
         navigationIcon = {
-          IconButton(onClick = { /*TODO*/}) {
-            Icon(Icons.TwoTone.ArrowBack, contentDescription = null)
-          }
+          IconButton(onClick = onPop) { Icon(Icons.TwoTone.ArrowBack, contentDescription = null) }
         }
       )
     },
@@ -110,6 +111,7 @@ fun AddTimeScreen() {
         readOnly = true,
         onValueChange = { _ -> },
       )
+      DropDownTextField(options = listOf("Option 1", "Option 2", "Option 3"))
     }
 
     if (showDatePicker) {
@@ -140,5 +142,5 @@ fun AddTimeScreen() {
 @CommonPreview
 @Composable
 fun AddTimeScreenPreview() {
-  AddTimeScreen()
+  AddTimeScreen(onPop = {})
 }
