@@ -7,6 +7,7 @@
 package dev.yashgarg.kimai.ui.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +35,7 @@ fun DropDownTextField(
     onExpandedChange = { expanded = !expanded },
   ) {
     CustomTextField(
-      modifier = Modifier.menuAnchor().fillMaxWidth(),
+      modifier = Modifier.menuAnchor().fillMaxWidth().padding(vertical = 6.dp),
       readOnly = true,
       hideKeyboard = true,
       value = selectedOptionText,

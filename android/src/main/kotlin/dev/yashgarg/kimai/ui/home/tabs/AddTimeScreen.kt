@@ -89,7 +89,7 @@ fun AddTimeScreen(
     Column(modifier = Modifier.fillMaxSize().padding(values).padding(horizontal = 16.dp)) {
       CustomTextField(
         hideKeyboard = true,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
         label = "Date",
         value = requireNotNull(datePickerState.selectedDateMillis).toDate(),
         trailingIcon = {
@@ -102,7 +102,7 @@ fun AddTimeScreen(
       )
       CustomTextField(
         hideKeyboard = true,
-        modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
         label = "Start Time",
         value = "${timePickerState.hour}:${timePickerState.minute}",
         trailingIcon = {
@@ -115,7 +115,15 @@ fun AddTimeScreen(
       )
       DropDownTextField(
         title = "Customer",
-        options = listOf("Option 1", "Option 2", "Option 3"),
+        options = listOf("Murena SAS", "Murena Inc.", "EFoundation", "Murena Retail SAS"),
+      )
+      DropDownTextField(
+        title = "Project",
+        options = listOf("/e/OS", "murena.com"),
+      )
+      DropDownTextField(
+        title = "Activity",
+        options = listOf("Development", "Maintenance", "Meeting", "Support"),
       )
     }
 
