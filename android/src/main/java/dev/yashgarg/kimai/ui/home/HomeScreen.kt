@@ -26,12 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import dev.yashgarg.kimai.di.CommonPreview
-import dev.yashgarg.kimai.ui.home.tabs.HomeNavGraph
+import dev.yashgarg.kimai.ui.navigation.HomeNavGraph
+import dev.yashgarg.kimai.ui.navigation.HomeNavigationBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+  onAddTimeClick: () -> Unit = {},
+) {
   val innerNavController = rememberNavController()
+
   Scaffold(
     topBar = {
       MediumTopAppBar(
@@ -49,7 +53,7 @@ fun HomeScreen() {
     floatingActionButton = {
       FloatingActionButton(
         modifier = Modifier.navigationBarsPadding(),
-        onClick = {},
+        onClick = onAddTimeClick,
       ) {
         Icon(Icons.TwoTone.Add, contentDescription = null)
       }

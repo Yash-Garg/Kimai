@@ -14,23 +14,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.yashgarg.kimai.toDateTime
+import dev.yashgarg.kimai.toTime
 import dev.yashgarg.kimai.ui.home.ActivityState
 import dev.yashgarg.kimai.ui.home.HomeState
 import dev.yashgarg.kimai.ui.home.ProjectsState
 import dev.yashgarg.kimai.ui.home.TimesheetState
-import dev.yashgarg.kimai.ui.theme.toDateTime
-import dev.yashgarg.kimai.ui.theme.toTime
 
 @Composable
 fun MyTimesScreen(state: HomeState) {
   Box(modifier = Modifier.fillMaxSize()) {
     when (state.timesheetState) {
-      is TimesheetState.Loading -> {}
+      is TimesheetState.Loading -> {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+          LinearProgressIndicator()
+        }
+      }
       is TimesheetState.Error -> {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           Text(text = "Error: ${state.timesheetState.message}")

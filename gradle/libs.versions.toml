@@ -36,7 +36,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-compiler = "androidx.compose.compiler:compiler:1.4.8"
 compose-material = "androidx.compose.material:material:1.4.3"
 compose-material-icons = "androidx.compose.material:material-icons-extended:1.4.3"
-compose-material3 = "androidx.compose.material3:material3:1.1.1"
+compose-material3 = "androidx.compose.material3:material3:1.2.0-alpha03"
 compose-navigation = "androidx.navigation:navigation-compose:2.7.0-beta02"
 compose-navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.0.0"
 compose-ui = { group = "androidx.compose.ui", name = "ui" }

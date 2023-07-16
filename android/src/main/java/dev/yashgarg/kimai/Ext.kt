@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
-package dev.yashgarg.kimai.ui.theme
+package dev.yashgarg.kimai
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalAbsoluteTonalElevation
@@ -12,7 +12,10 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import java.time.Instant
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -50,6 +53,13 @@ private object NumberFormat {
 
     return timeStr.toString().trim()
   }
+
+  fun millisToDate(millis: Long, zoneId: ZoneId?): String {
+    val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
+    val instant = Instant.ofEpochMilli(millis)
+    val date = LocalDateTime.ofInstant(instant, zoneId ?: ZoneId.systemDefault())
+    return formatter.format(date).trim()
+  }
 }
 
 fun Int.toTime(): String = NumberFormat.secondsToTime(this.toLong())
@@ -62,3 +72,5 @@ fun String.toDateTime(): String {
 
   return offsetDateTime.toLocalDateTime().format(outputFormatter)
 }
+
+fun Long.toDate(zoneId: ZoneId? = null): String = NumberFormat.millisToDate(this, zoneId)

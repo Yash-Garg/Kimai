@@ -19,6 +19,8 @@ sealed class NavDestinations(val route: String) {
 
   object Calendar : NavDestinations("calendar")
 
+  object AddTime : NavDestinations("add-time")
+
   companion object {
     val startDestination
       get() = Landing

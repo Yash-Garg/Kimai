@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
-package dev.yashgarg.kimai.ui.home
+package dev.yashgarg.kimai.ui.navigation
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.material3.Icon
@@ -14,12 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import dev.yashgarg.kimai.ui.navigation.BottomNavItem
-import dev.yashgarg.kimai.ui.navigation.HomeNavItems
 
 @Composable
 fun HomeNavigationBar(
@@ -27,7 +25,7 @@ fun HomeNavigationBar(
   navController: NavController,
   items: List<BottomNavItem> = HomeNavItems.all,
 ) {
-  var selectedItem by remember { mutableIntStateOf(0) }
+  var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
   NavigationBar(modifier = modifier) {
     items.forEachIndexed { index, item ->

@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
-package dev.yashgarg.kimai.ui.home.tabs
+package dev.yashgarg.kimai.ui.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.yashgarg.kimai.ui.home.HomeViewModel
-import dev.yashgarg.kimai.ui.navigation.NavDestinations
+import dev.yashgarg.kimai.ui.home.tabs.DashboardScreen
+import dev.yashgarg.kimai.ui.home.tabs.MyTimesScreen
 
 @Composable
 fun HomeNavGraph(

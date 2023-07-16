@@ -8,7 +8,9 @@ package dev.yashgarg.kimai.ui.home.tabs
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.yashgarg.kimai.ui.home.ActivityState
 import dev.yashgarg.kimai.ui.home.HomeState
@@ -17,9 +19,13 @@ import dev.yashgarg.kimai.ui.home.HomeState
 fun DashboardScreen(state: HomeState) {
   Box(modifier = Modifier.fillMaxSize()) {
     when (state.activityState) {
-      is ActivityState.Error -> TODO()
-      is ActivityState.Loading -> TODO()
-      is ActivityState.Success -> TODO()
+      is ActivityState.Error -> {}
+      is ActivityState.Loading -> {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+          LinearProgressIndicator()
+        }
+      }
+      is ActivityState.Success -> {}
     }
   }
 }

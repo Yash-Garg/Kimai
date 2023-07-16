@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.yashgarg.kimai.ui.authentication.AuthScreen
 import dev.yashgarg.kimai.ui.authentication.AuthViewModel
 import dev.yashgarg.kimai.ui.home.HomeScreen
+import dev.yashgarg.kimai.ui.home.tabs.AddTimeScreen
 import dev.yashgarg.kimai.ui.landing.LandingScreen
 import dev.yashgarg.kimai.ui.navigation.NavDestinations
 import dev.yashgarg.kimai.ui.theme.KimaiTheme
@@ -66,7 +67,11 @@ fun MainApp() {
           )
         }
 
-        composable(NavDestinations.Home.route) { HomeScreen() }
+        composable(NavDestinations.Home.route) {
+          HomeScreen(onAddTimeClick = { navController.navigate(NavDestinations.AddTime.route) })
+        }
+
+        composable(NavDestinations.AddTime.route) { AddTimeScreen() }
       }
     }
   }
