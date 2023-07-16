@@ -11,9 +11,9 @@ import androidx.annotation.Keep
 @Keep
 data class AuthFormState(
   val baseUrl: String = "",
-  val baseUrlError: String? = null,
+  val baseUrlError: Boolean = false,
   val username: String = "",
-  val usernameError: String? = null,
-  val password: String = "",
-  val passwordError: String? = null,
+  val usernameError: Boolean = false,
+  val apiToken: String = "",
+  val apiTokenError: Boolean = false,
 )

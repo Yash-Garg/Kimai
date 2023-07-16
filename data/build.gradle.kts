@@ -9,6 +9,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.kotlinSerialization)
 }
 
@@ -30,6 +31,7 @@ dependencies {
 
     implementation(libs.bundles.square)
     implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     implementation(libs.kotlinx.serialization)
     testImplementation(libs.junit)

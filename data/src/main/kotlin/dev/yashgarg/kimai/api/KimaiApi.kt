@@ -7,11 +7,19 @@
 package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
+import dev.yashgarg.kimai.models.Ping
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.HeaderMap
 import retrofit2.http.Query
 
 interface KimaiApi {
+  @GET("ping")
+  /** A simple route that returns a 'pong', which you can use for testing the API */
+  suspend fun ping(
+    @HeaderMap authHeaders: Map<String, String>,
+  ): Response<Ping>
+
   @GET("activities")
   /**
    * Returns a collection of activities (which are visible to the user)

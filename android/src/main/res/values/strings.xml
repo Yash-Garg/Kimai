@@ -6,4 +6,6 @@
  -->
 <resources>
     <string name="app_name">Kimai</string>
+    <string name="get_started">Get Started</string>
+    <string name="connect_instance">Connect your instance</string>
 </resources>

@@ -11,7 +11,7 @@ sealed class AuthFormEvent {
 
   data class UsernameChanged(val username: String) : AuthFormEvent()
 
-  data class PasswordChanged(val password: String) : AuthFormEvent()
+  data class ApiTokenChanged(val token: String) : AuthFormEvent()
 
   object Save : AuthFormEvent()
 }

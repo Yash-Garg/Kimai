@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +53,9 @@ fun LandingScreen(
       letterSpacing = 1.sp,
     )
     Spacer(modifier = Modifier.weight(1f))
-    FilledTonalButton(onClick = onGetStartedClick) { Text(text = "Get Started") }
+    FilledTonalButton(onClick = onGetStartedClick) {
+      Text(text = stringResource(R.string.get_started))
+    }
     Spacer(modifier = Modifier.size(24.dp))
   }
 }

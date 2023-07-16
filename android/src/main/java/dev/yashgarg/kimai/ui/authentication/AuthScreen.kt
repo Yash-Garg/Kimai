@@ -6,6 +6,7 @@
  */
 package dev.yashgarg.kimai.ui.authentication
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,32 +27,58 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.yashgarg.kimai.R
 import dev.yashgarg.kimai.di.CommonPreview
+import dev.yashgarg.kimai.ui.authentication.AuthViewModel.ValidationEvent
 import dev.yashgarg.kimai.ui.common.CustomTextField
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
   authState: AuthFormState,
+  validationEvent: SharedFlow<ValidationEvent>,
   onEvent: (AuthFormEvent) -> Unit,
+  onSuccess: () -> Unit,
 ) {
-  var passwordHidden by rememberSaveable { mutableStateOf(true) }
+  val context = LocalContext.current
+  var tokenHidden by rememberSaveable { mutableStateOf(true) }
+
+  LaunchedEffect(context) {
+    validationEvent.collectLatest {
+      val message =
+        when (it) {
+          is ValidationEvent.Failure -> it.msg
+          ValidationEvent.Success -> {
+            onSuccess()
+            "Success"
+          }
+        }
+
+      Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+  }
 
   Scaffold(
     topBar = {
       MediumTopAppBar(
         title = {
           Text(
-            text = "Connect your instance",
+            text = stringResource(R.string.connect_instance),
             fontWeight = FontWeight.SemiBold,
             fontSize = 24.sp,
           )
@@ -76,8 +103,7 @@ fun AuthScreen(
       CustomTextField(
         modifier = Modifier.fillMaxWidth(),
         value = authState.baseUrl,
-        isError = authState.baseUrlError != null,
-        prefixText = "https://",
+        isError = authState.baseUrlError,
         trailingIcon = { Icon(imageVector = Icons.TwoTone.Dns, contentDescription = null) },
         onValueChange = { onEvent(AuthFormEvent.BaseUrlChanged(it)) },
         label = "Instance URL",
@@ -85,23 +111,23 @@ fun AuthScreen(
       CustomTextField(
         modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
         value = authState.username,
-        isError = authState.usernameError != null,
+        isError = authState.usernameError,
         trailingIcon = { Icon(imageVector = Icons.TwoTone.Person, contentDescription = null) },
-        onValueChange = { onEvent(AuthFormEvent.BaseUrlChanged(it)) },
+        onValueChange = { onEvent(AuthFormEvent.UsernameChanged(it)) },
         label = "Username",
       )
       CustomTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = authState.password,
-        isError = authState.passwordError != null,
-        onValueChange = { onEvent(AuthFormEvent.PasswordChanged(it)) },
-        label = "Password",
+        value = authState.apiToken,
+        isError = authState.apiTokenError,
+        onValueChange = { onEvent(AuthFormEvent.ApiTokenChanged(it)) },
+        label = "Api Token",
         keyboardType = KeyboardType.Password,
-        passwordHidden = passwordHidden,
+        passwordHidden = tokenHidden,
         trailingIcon = {
-          IconButton(onClick = { passwordHidden = !passwordHidden }) {
+          IconButton(onClick = { tokenHidden = !tokenHidden }) {
             val visibilityIcon =
-              if (passwordHidden) Icons.TwoTone.Visibility else Icons.TwoTone.VisibilityOff
+              if (tokenHidden) Icons.TwoTone.Visibility else Icons.TwoTone.VisibilityOff
             Icon(imageVector = visibilityIcon, contentDescription = null)
           }
         }
@@ -113,5 +139,10 @@ fun AuthScreen(
 @CommonPreview
 @Composable
 fun AuthScreenPreview() {
-  AuthScreen(authState = AuthFormState(), onEvent = {})
+  AuthScreen(
+    authState = AuthFormState(),
+    validationEvent = MutableSharedFlow(),
+    onEvent = {},
+    onSuccess = {}
+  )
 }

@@ -1,0 +1,29 @@
+/*
+ * Copyright © 2023 Yash Garg.
+ * Use of this source code is governed by an MIT-style
+ * license that can be found in the LICENSE file or at
+ * https://opensource.org/licenses/MIT.
+ */
+package dev.yashgarg.kimai.api
+
+import dev.yashgarg.kimai.models.Activity
+import dev.yashgarg.kimai.models.Ping
+import dev.yashgarg.kimai.util.ApiResult
+import dev.yashgarg.kimai.util.handleApi
+import javax.inject.Inject
+
+class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : KimaiRepository {
+  override suspend fun ping(
+    authHeaders: Map<String, String>,
+  ): ApiResult<Ping> = handleApi { api.ping(authHeaders) }
+
+  override suspend fun getActivities(
+    projectId: Int?,
+    projects: List<Int>,
+    visible: Int,
+    globals: Boolean?,
+    orderBy: String?,
+    order: String,
+    searchTerm: String?
+  ): ApiResult<Activity> = handleApi { TODO("Not yet implemented") }
+}

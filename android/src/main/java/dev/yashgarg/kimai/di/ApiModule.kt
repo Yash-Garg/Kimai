@@ -11,7 +11,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.yashgarg.kimai.HostSelectionInterceptor
 import dev.yashgarg.kimai.api.KimaiApi
+import dev.yashgarg.kimai.api.KimaiRepository
+import dev.yashgarg.kimai.api.KimaiRepositoryImpl
 import dev.zacsweers.moshix.reflect.MetadataKotlinJsonAdapterFactory
 import javax.inject.Singleton
 import kotlinx.coroutines.MainScope
@@ -25,10 +28,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 object ApiModule {
   @Singleton
   @Provides
-  fun provideOkHttpClient(): OkHttpClient {
+  fun provideHostSelectionInterceptor(): HostSelectionInterceptor = HostSelectionInterceptor()
+
+  @Singleton
+  @Provides
+  fun provideOkHttpClient(hostInterceptor: HostSelectionInterceptor): OkHttpClient {
     val logging = HttpLoggingInterceptor()
     logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-    return OkHttpClient.Builder().addInterceptor(logging).build()
+    return OkHttpClient.Builder().addInterceptor(logging).addInterceptor(hostInterceptor).build()
   }
 
   @Singleton
@@ -47,6 +54,10 @@ object ApiModule {
   @Singleton
   @Provides
   fun provideBaseApi(retrofit: Retrofit): KimaiApi = retrofit.create(KimaiApi::class.java)
+
+  @Singleton
+  @Provides
+  fun provideRepository(api: KimaiApi): KimaiRepository = KimaiRepositoryImpl(api)
 
   @ApplicationScope @Provides fun provideCoroutineScope() = MainScope()
 }

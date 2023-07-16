@@ -11,6 +11,8 @@ sealed class NavDestinations(val route: String) {
 
   object Auth : NavDestinations("auth")
 
+  object Home : NavDestinations("home")
+
   companion object {
     val startDestination
       get() = Landing

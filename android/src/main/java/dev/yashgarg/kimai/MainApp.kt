@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.yashgarg.kimai.ui.authentication.AuthScreen
 import dev.yashgarg.kimai.ui.authentication.AuthViewModel
+import dev.yashgarg.kimai.ui.home.HomeScreen
 import dev.yashgarg.kimai.ui.landing.LandingScreen
 import dev.yashgarg.kimai.ui.navigation.NavDestinations
 import dev.yashgarg.kimai.ui.theme.KimaiTheme
@@ -48,8 +49,14 @@ fun MainApp() {
         }
         composable(NavDestinations.Auth.route) {
           val viewModel = hiltViewModel<AuthViewModel>()
-          AuthScreen(authState = viewModel.state, onEvent = { viewModel.onEvent(it) })
+          AuthScreen(
+            authState = viewModel.state,
+            validationEvent = viewModel.event,
+            onEvent = { viewModel.onEvent(it) },
+            onSuccess = { navController.navigate(NavDestinations.Home.route) }
+          )
         }
+        composable(NavDestinations.Home.route) { HomeScreen() }
       }
     }
   }

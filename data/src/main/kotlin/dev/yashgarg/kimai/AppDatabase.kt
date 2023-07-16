@@ -9,13 +9,13 @@ package dev.yashgarg.kimai
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import dev.yashgarg.kimai.daos.ConfigDao
-import dev.yashgarg.kimai.models.ClientConfig
+import dev.yashgarg.kimai.models.InstanceConfig
 
-@Database(version = 1, entities = [ClientConfig::class], exportSchema = false)
+@Database(version = 1, entities = [InstanceConfig::class], exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun configDao(): ConfigDao
 
   companion object {
-    const val DB_NAME = "kimai.db"
+    const val DB_NAME = "kimai"
   }
 }
