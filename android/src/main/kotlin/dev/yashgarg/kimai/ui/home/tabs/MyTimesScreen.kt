@@ -25,13 +25,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.yashgarg.kimai.toDateTime
-import dev.yashgarg.kimai.toTime
 import dev.yashgarg.kimai.ui.common.Center
 import dev.yashgarg.kimai.ui.home.ActivityState
 import dev.yashgarg.kimai.ui.home.HomeState
 import dev.yashgarg.kimai.ui.home.ProjectsState
 import dev.yashgarg.kimai.ui.home.TimesheetState
+import dev.yashgarg.kimai.util.toDateTime
+import dev.yashgarg.kimai.util.toTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
