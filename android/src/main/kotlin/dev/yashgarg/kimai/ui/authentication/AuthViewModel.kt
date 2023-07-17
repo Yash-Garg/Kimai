@@ -91,6 +91,13 @@ constructor(
     val usernameCheck = state.username.isNotEmpty()
     val passwordCheck = state.apiToken.isNotEmpty()
 
+    state =
+      state.copy(
+        baseUrlError = !urlCheck,
+        usernameError = !usernameCheck,
+        apiTokenError = !passwordCheck,
+      )
+
     val hasError = listOf(urlCheck, usernameCheck, passwordCheck).any { !it }
 
     if (!hasError) {
@@ -104,11 +111,15 @@ constructor(
         )
 
       interceptor.setValues(config.url, config.username, config.apiToken)
-      viewModelScope.launch { validateCredentials(config) }
+      state = state.copy(isLoading = true)
+      viewModelScope.launch {
+        _event.emit(ValidationEvent.Loading)
+        validateCredentials(config)
+      }
     }
   }
 
-  private suspend fun validateCredentials(config: InstanceConfig) =
+  private suspend fun validateCredentials(config: InstanceConfig) {
     when (val result = repository.ping()) {
       is ApiSuccess -> {
         _event.emit(ValidationEvent.Success)
@@ -122,9 +133,14 @@ constructor(
       }
     }
 
+    state = state.copy(isLoading = false)
+  }
+
   sealed class ValidationEvent {
     class Failure(val msg: String) : ValidationEvent()
 
     object Success : ValidationEvent()
+
+    object Loading : ValidationEvent()
   }
 }

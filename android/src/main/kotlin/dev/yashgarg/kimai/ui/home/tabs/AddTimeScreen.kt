@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.CalendarMonth
 import androidx.compose.material.icons.twotone.Check
-import androidx.compose.material.icons.twotone.Timer
+import androidx.compose.material.icons.twotone.Schedule
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -91,6 +91,7 @@ fun AddTimeScreen(
         hideKeyboard = true,
         modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
         label = "Date",
+        supportText = "Use the calendar icon to select a date",
         value = requireNotNull(datePickerState.selectedDateMillis).toDate(),
         trailingIcon = {
           IconButton(onClick = { showDatePicker = true }) {
@@ -104,10 +105,11 @@ fun AddTimeScreen(
         hideKeyboard = true,
         modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
         label = "Start Time",
+        supportText = "Use the clock icon to select a time",
         value = "${timePickerState.hour}:${timePickerState.minute}",
         trailingIcon = {
           IconButton(onClick = { showTimePicker = true }) {
-            Icon(Icons.TwoTone.Timer, contentDescription = null)
+            Icon(Icons.TwoTone.Schedule, contentDescription = null)
           }
         },
         readOnly = true,

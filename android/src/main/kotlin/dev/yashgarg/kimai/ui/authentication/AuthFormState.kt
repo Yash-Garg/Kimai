@@ -17,4 +17,5 @@ data class AuthFormState(
   val usernameError: Boolean = false,
   val apiToken: String = "",
   val apiTokenError: Boolean = false,
+  val isLoading: Boolean = false
 )

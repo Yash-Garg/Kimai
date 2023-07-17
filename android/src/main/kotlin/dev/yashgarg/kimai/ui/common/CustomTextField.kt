@@ -33,6 +33,7 @@ fun CustomTextField(
   suffixText: String? = null,
   prefixText: String? = null,
   hideKeyboard: Boolean = false,
+  supportText: String? = null,
 ) {
   CompositionLocalProvider(
     LocalTextInputService provides if (hideKeyboard) null else LocalTextInputService.current,
@@ -43,6 +44,7 @@ fun CustomTextField(
       onValueChange = onValueChange,
       isError = isError,
       leadingIcon = leadingIcon,
+      supportingText = supportText?.let { { Text(it) } },
       readOnly = readOnly,
       label = { Text(label) },
       suffix = suffixText?.let { { Text(it) } },

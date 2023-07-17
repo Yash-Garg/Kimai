@@ -6,7 +6,6 @@
  */
 package dev.yashgarg.kimai.ui.authentication
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,11 +24,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -58,23 +60,26 @@ fun AuthScreen(
 ) {
   val context = LocalContext.current
   var tokenHidden by rememberSaveable { mutableStateOf(true) }
+  val snackbarHostState = remember { SnackbarHostState() }
 
   LaunchedEffect(context) {
     validationEvent.collectLatest {
       val message =
         when (it) {
+          is ValidationEvent.Loading -> "Validating credentials..."
           is ValidationEvent.Failure -> it.msg
-          ValidationEvent.Success -> {
+          is ValidationEvent.Success -> {
             onSuccess()
             "Success"
           }
         }
 
-      Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+      snackbarHostState.showSnackbar(message)
     }
   }
 
   Scaffold(
+    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     topBar = {
       MediumTopAppBar(
         title = {
@@ -102,6 +107,7 @@ fun AuthScreen(
   ) { padding ->
     Column(modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp, 0.dp)) {
       CustomTextField(
+        readOnly = authState.isLoading,
         modifier = Modifier.fillMaxWidth(),
         value = authState.baseUrl,
         isError = authState.baseUrlError,
@@ -110,6 +116,7 @@ fun AuthScreen(
         label = "Instance URL",
       )
       CustomTextField(
+        readOnly = authState.isLoading,
         modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
         value = authState.username,
         isError = authState.usernameError,
@@ -118,6 +125,7 @@ fun AuthScreen(
         label = "Username / Email",
       )
       CustomTextField(
+        readOnly = authState.isLoading,
         modifier = Modifier.fillMaxWidth(),
         value = authState.apiToken,
         isError = authState.apiTokenError,
