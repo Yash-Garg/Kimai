@@ -18,10 +18,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.yashgarg.kimai.ui.activity.AddTimeScreen
+import dev.yashgarg.kimai.ui.activity.AddTimeViewModel
 import dev.yashgarg.kimai.ui.authentication.AuthScreen
 import dev.yashgarg.kimai.ui.authentication.AuthViewModel
 import dev.yashgarg.kimai.ui.home.HomeScreen
-import dev.yashgarg.kimai.ui.home.tabs.AddTimeScreen
 import dev.yashgarg.kimai.ui.landing.LandingScreen
 import dev.yashgarg.kimai.ui.navigation.NavDestinations
 import dev.yashgarg.kimai.ui.theme.KimaiTheme
@@ -78,7 +79,12 @@ fun MainApp() {
         }
 
         composable(NavDestinations.AddTime.route) {
-          AddTimeScreen(onPop = { navController.popBackStack() })
+          val viewModel = hiltViewModel<AddTimeViewModel>()
+          AddTimeScreen(
+            onPop = { navController.popBackStack() },
+            state = viewModel.state,
+            onEvent = { viewModel.onEvent(it) },
+          )
         }
       }
     }

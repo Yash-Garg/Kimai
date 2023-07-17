@@ -60,6 +60,13 @@ private object NumberFormat {
     val date = LocalDateTime.ofInstant(instant, zoneId ?: ZoneId.systemDefault())
     return formatter.format(date).trim()
   }
+
+  fun millisToDateInverse(millis: Long, zoneId: ZoneId?): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'")
+    val instant = Instant.ofEpochMilli(millis)
+    val date = LocalDateTime.ofInstant(instant, zoneId ?: ZoneId.systemDefault())
+    return formatter.format(date).trim()
+  }
 }
 
 fun Int.toTime(): String = NumberFormat.secondsToTime(this.toLong())
@@ -74,3 +81,6 @@ fun String.toDateTime(): String {
 }
 
 fun Long.toDate(zoneId: ZoneId? = null): String = NumberFormat.millisToDate(this, zoneId)
+
+fun Long.toDateInverse(zoneId: ZoneId? = null): String =
+  NumberFormat.millisToDateInverse(this, zoneId)

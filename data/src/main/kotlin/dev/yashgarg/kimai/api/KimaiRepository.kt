@@ -7,6 +7,7 @@
 package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
+import dev.yashgarg.kimai.models.Customer
 import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.models.TimesheetActivity
 import dev.yashgarg.kimai.util.ApiResult
@@ -32,6 +33,10 @@ interface KimaiRepository {
     orderBy: String? = null,
     order: String? = null,
   ): ApiResult<List<TimesheetActivity>>
+
+  suspend fun getCustomers(
+    visible: Int = 1,
+  ): ApiResult<List<Customer>>
 
   suspend fun createTimeSheet(
     begin: String,

@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 fun DropDownTextField(
   title: String,
   options: List<String>,
+  supportText: String? = null,
+  onValueChange: (String) -> Unit = {},
 ) {
   var expanded by remember { mutableStateOf(false) }
   var selectedOptionText by remember { mutableStateOf(options[0]) }
@@ -39,7 +41,8 @@ fun DropDownTextField(
       readOnly = true,
       hideKeyboard = true,
       value = selectedOptionText,
-      onValueChange = {},
+      onValueChange = onValueChange,
+      supportText = supportText,
       label = title,
       trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
     )
@@ -52,6 +55,7 @@ fun DropDownTextField(
           text = { Text(selectionOption) },
           onClick = {
             selectedOptionText = selectionOption
+            onValueChange(selectionOption)
             expanded = false
           },
           contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,

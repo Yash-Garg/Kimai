@@ -17,11 +17,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.yashgarg.kimai.toDateTime
 import dev.yashgarg.kimai.toTime
+import dev.yashgarg.kimai.ui.common.Center
 import dev.yashgarg.kimai.ui.home.ActivityState
 import dev.yashgarg.kimai.ui.home.HomeState
 import dev.yashgarg.kimai.ui.home.ProjectsState
@@ -32,14 +32,10 @@ fun MyTimesScreen(state: HomeState) {
   Box(modifier = Modifier.fillMaxSize()) {
     when (state.timesheetState) {
       is TimesheetState.Loading -> {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-          LinearProgressIndicator()
-        }
+        Center { LinearProgressIndicator() }
       }
       is TimesheetState.Error -> {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-          Text(text = "Error: ${state.timesheetState.message}")
-        }
+        Center { Text(text = "Error: ${state.timesheetState.message}") }
       }
       is TimesheetState.Success -> {
         val timesheets = state.timesheetState.timesheets
@@ -47,9 +43,7 @@ fun MyTimesScreen(state: HomeState) {
         val projects = (state.projectsState as? ProjectsState.Success)?.projects
 
         if (timesheets.isEmpty()) {
-          Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "No timesheets found")
-          }
+          Center { Text(text = "No timesheets found") }
         } else {
           LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(timesheets) { sheet ->

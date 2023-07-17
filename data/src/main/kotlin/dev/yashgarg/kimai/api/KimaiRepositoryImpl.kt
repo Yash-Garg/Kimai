@@ -7,6 +7,7 @@
 package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
+import dev.yashgarg.kimai.models.Customer
 import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.models.TimesheetActivity
 import dev.yashgarg.kimai.util.ApiResult
@@ -45,6 +46,10 @@ class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : Kimai
     order: String?
   ): ApiResult<List<TimesheetActivity>> = handleApi {
     api.getTimesheets(orderBy = orderBy, order = order)
+  }
+
+  override suspend fun getCustomers(visible: Int): ApiResult<List<Customer>> = handleApi {
+    api.getCustomers(visible = visible)
   }
 
   override suspend fun createTimeSheet(

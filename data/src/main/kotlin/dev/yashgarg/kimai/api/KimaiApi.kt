@@ -7,6 +7,7 @@
 package dev.yashgarg.kimai.api
 
 import dev.yashgarg.kimai.models.Activity
+import dev.yashgarg.kimai.models.Customer
 import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.models.TimesheetActivity
 import retrofit2.Response
@@ -43,6 +44,12 @@ interface KimaiApi {
     @Query("orderBy") orderBy: String? = null,
     @Query("order") order: String? = null,
   ): Response<List<TimesheetActivity>>
+
+  @GET("customers")
+  /** Returns a collection of customers (which are visible to the user) */
+  suspend fun getCustomers(
+    @Query("visible") visible: Int = 1,
+  ): Response<List<Customer>>
 
   @POST("timesheets")
   /** Creates a new timesheet record */
