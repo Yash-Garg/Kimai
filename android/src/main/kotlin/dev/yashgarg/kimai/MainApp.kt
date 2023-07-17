@@ -82,6 +82,7 @@ fun MainApp() {
           val viewModel = hiltViewModel<AddTimeViewModel>()
           AddTimeScreen(
             onPop = { navController.popBackStack() },
+            validationEvent = viewModel.event,
             state = viewModel.state,
             onEvent = { viewModel.onEvent(it) },
           )

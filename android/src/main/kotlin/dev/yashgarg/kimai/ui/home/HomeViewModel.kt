@@ -75,22 +75,24 @@ constructor(
       }
   }
 
-  private suspend fun loadTimeSheets() {
-    val result = repository.getTimeSheets()
+  fun loadTimeSheets() {
+    viewModelScope.launch {
+      val result = repository.getTimeSheets()
 
-    state =
-      when (result) {
-        is ApiSuccess -> {
-          state.copy(timesheetState = TimesheetState.Success(result.data))
+      state =
+        when (result) {
+          is ApiSuccess -> {
+            state.copy(timesheetState = TimesheetState.Success(result.data))
+          }
+          is ApiError -> {
+            Log.e("HomeViewModel", result.message ?: "Unknown error")
+            state.copy(timesheetState = TimesheetState.Error(result.message ?: "Unknown error"))
+          }
+          is ApiException -> {
+            Log.e("HomeViewModel", result.e.toString())
+            state.copy(timesheetState = TimesheetState.Error(result.e.toString()))
+          }
         }
-        is ApiError -> {
-          Log.e("HomeViewModel", result.message ?: "Unknown error")
-          state.copy(timesheetState = TimesheetState.Error(result.message ?: "Unknown error"))
-        }
-        is ApiException -> {
-          Log.e("HomeViewModel", result.e.toString())
-          state.copy(timesheetState = TimesheetState.Error(result.e.toString()))
-        }
-      }
+    }
   }
 }

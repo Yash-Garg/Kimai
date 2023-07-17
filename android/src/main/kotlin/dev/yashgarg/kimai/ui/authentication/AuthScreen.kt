@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.yashgarg.kimai.R
 import dev.yashgarg.kimai.di.CommonPreview
-import dev.yashgarg.kimai.ui.authentication.AuthViewModel.ValidationEvent
 import dev.yashgarg.kimai.ui.common.CustomTextField
+import dev.yashgarg.kimai.ui.common.ValidationEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest

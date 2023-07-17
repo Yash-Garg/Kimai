@@ -11,6 +11,7 @@ import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import java.time.Instant
 import java.time.LocalDateTime
@@ -19,6 +20,12 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ColorScheme.surfaceColorAtNavigationBarElevation(): Color {
@@ -61,8 +68,15 @@ private object NumberFormat {
     return formatter.format(date).trim()
   }
 
-  fun millisToDateInverse(millis: Long, zoneId: ZoneId?): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'")
+  fun millisToOnlyDate(millis: Long, zoneId: ZoneId?): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val instant = Instant.ofEpochMilli(millis)
+    val date = LocalDateTime.ofInstant(instant, zoneId ?: ZoneId.systemDefault())
+    return formatter.format(date).trim()
+  }
+
+  fun millisToTime(millis: Long, zoneId: ZoneId?): String {
+    val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
     val instant = Instant.ofEpochMilli(millis)
     val date = LocalDateTime.ofInstant(instant, zoneId ?: ZoneId.systemDefault())
     return formatter.format(date).trim()
@@ -80,7 +94,16 @@ fun String.toDateTime(): String {
   return offsetDateTime.toLocalDateTime().format(outputFormatter)
 }
 
+fun Long.toOnlyDate(zoneId: ZoneId? = null): String = NumberFormat.millisToOnlyDate(this, zoneId)
+
+fun Long.toTime(zoneId: ZoneId? = null): String = NumberFormat.millisToTime(this, zoneId)
+
 fun Long.toDate(zoneId: ZoneId? = null): String = NumberFormat.millisToDate(this, zoneId)
 
-fun Long.toDateInverse(zoneId: ZoneId? = null): String =
-  NumberFormat.millisToDateInverse(this, zoneId)
+@Composable
+fun <T> Flow<T>.collectAsEffect(
+  context: CoroutineContext = EmptyCoroutineContext,
+  block: (T) -> Unit
+) {
+  LaunchedEffect(key1 = Unit) { onEach(block).flowOn(context).launchIn(this) }
+}

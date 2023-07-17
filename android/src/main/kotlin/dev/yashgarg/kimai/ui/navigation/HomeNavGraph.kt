@@ -34,7 +34,9 @@ fun HomeNavGraph(
   ) {
     composable(NavDestinations.Dashboard.route) { DashboardScreen(state = viewModel.state) }
 
-    composable(NavDestinations.MyTimes.route) { MyTimesScreen(state = viewModel.state) }
+    composable(NavDestinations.MyTimes.route) {
+      MyTimesScreen(state = viewModel.state, onRefresh = { viewModel.loadTimeSheets() })
+    }
 
     composable(NavDestinations.Calendar.route) {
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

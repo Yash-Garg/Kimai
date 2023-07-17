@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.yashgarg.kimai.api.KimaiRepository
 import dev.yashgarg.kimai.daos.ConfigDao
 import dev.yashgarg.kimai.models.InstanceConfig
+import dev.yashgarg.kimai.ui.common.ValidationEvent
 import dev.yashgarg.kimai.util.ApiError
 import dev.yashgarg.kimai.util.ApiException
 import dev.yashgarg.kimai.util.ApiSuccess
@@ -134,13 +135,5 @@ constructor(
     }
 
     state = state.copy(isLoading = false)
-  }
-
-  sealed class ValidationEvent {
-    class Failure(val msg: String) : ValidationEvent()
-
-    object Success : ValidationEvent()
-
-    object Loading : ValidationEvent()
   }
 }

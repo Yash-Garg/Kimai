@@ -6,6 +6,7 @@
  */
 package dev.yashgarg.kimai.ui.activity
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,24 +38,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.yashgarg.kimai.di.CommonPreview
 import dev.yashgarg.kimai.toDate
+import dev.yashgarg.kimai.toTime
 import dev.yashgarg.kimai.ui.common.Center
 import dev.yashgarg.kimai.ui.common.CustomTextField
 import dev.yashgarg.kimai.ui.common.DropDownTextField
 import dev.yashgarg.kimai.ui.common.TimePickerDialog
+import dev.yashgarg.kimai.ui.common.ValidationEvent
 import java.util.Calendar
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTimeScreen(
   state: AddTimeViewState,
+  validationEvent: SharedFlow<ValidationEvent>,
   onEvent: (AddTimeViewEvent) -> Unit = {},
   onPop: () -> Unit,
 ) {
+  val cal = Calendar.getInstance()
   var showDatePicker by remember { mutableStateOf(false) }
   var showTimePicker by remember { mutableStateOf(false) }
   val datePickerState =
@@ -64,16 +73,33 @@ fun AddTimeScreen(
   val timePickerState =
     rememberTimePickerState(
       is24Hour = true,
-      initialHour = Calendar.getInstance().get(Calendar.HOUR),
-      initialMinute = Calendar.getInstance().get(Calendar.MINUTE)
+      initialHour = cal.get(Calendar.HOUR),
+      initialMinute = cal.get(Calendar.MINUTE)
     )
   val confirmEnabled = remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
 
+  val context = LocalContext.current
+  LaunchedEffect(context) {
+    validationEvent.collectLatest {
+      val message =
+        when (it) {
+          is ValidationEvent.Loading -> "Sending data through API..."
+          is ValidationEvent.Failure -> it.msg
+          is ValidationEvent.Success -> {
+            onPop()
+            "Successfully added time entry!"
+          }
+        }
+
+      Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+  }
+
   LaunchedEffect(Unit) {
     println("AddTimeScreen: LaunchedEffect")
-    onEvent(AddTimeViewEvent.DateSelected(datePickerState.selectedDateMillis!!.toString()))
-    onEvent(AddTimeViewEvent.StartTimeSelected("${timePickerState.hour}:${timePickerState.minute}"))
-    onEvent(AddTimeViewEvent.DurationSelected(state.durations.first()))
+    onEvent(AddTimeViewEvent.DateSelected(datePickerState.selectedDateMillis!!))
+    onEvent(AddTimeViewEvent.StartTimeSelected(cal.timeInMillis))
+    onEvent(AddTimeViewEvent.DurationSelected(state.durations.keys.first()))
   }
 
   Scaffold(
@@ -113,21 +139,21 @@ fun AddTimeScreen(
         modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
         label = "Date",
         supportText = "Use the calendar icon to select a date",
-        value = state.selectedDate!!.toLong().toDate(),
+        value = state.selectedDate!!.toDate(),
         trailingIcon = {
           IconButton(onClick = { showDatePicker = true }) {
             Icon(Icons.TwoTone.CalendarMonth, contentDescription = null)
           }
         },
         readOnly = true,
-        onValueChange = { onEvent(AddTimeViewEvent.DateSelected(it)) },
+        onValueChange = { onEvent(AddTimeViewEvent.DateSelected(it.toLong())) },
       )
       CustomTextField(
         hideKeyboard = true,
         modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
         label = "Start Time",
         supportText = "Use the clock icon to select a time",
-        value = state.selectedStartTime!!,
+        value = state.selectedStartTime!!.toTime(),
         trailingIcon = {
           IconButton(onClick = { showTimePicker = true }) {
             Icon(Icons.TwoTone.Timer, contentDescription = null)
@@ -138,7 +164,7 @@ fun AddTimeScreen(
       )
       DropDownTextField(
         title = "Duration",
-        options = state.durations,
+        options = state.durations.keys.toList(),
         supportText = "in hours",
         onValueChange = { onEvent(AddTimeViewEvent.DurationSelected(it)) },
       )
@@ -166,9 +192,7 @@ fun AddTimeScreen(
           TextButton(
             onClick = {
               showDatePicker = false
-              onEvent(
-                AddTimeViewEvent.DateSelected(datePickerState.selectedDateMillis!!.toString())
-              )
+              onEvent(AddTimeViewEvent.DateSelected(datePickerState.selectedDateMillis!!))
             },
             enabled = confirmEnabled.value
           ) {
@@ -185,10 +209,14 @@ fun AddTimeScreen(
       TimePickerDialog(
         onCancel = { showTimePicker = false },
         onConfirm = {
+          cal.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
+          cal.set(Calendar.MINUTE, timePickerState.minute)
+          cal.set(Calendar.SECOND, 0)
+
+          cal.timeInMillis
+
           showTimePicker = false
-          onEvent(
-            AddTimeViewEvent.StartTimeSelected("${timePickerState.hour}:${timePickerState.minute}")
-          )
+          onEvent(AddTimeViewEvent.StartTimeSelected(cal.timeInMillis))
         },
       ) {
         TimeInput(state = timePickerState)
@@ -200,5 +228,5 @@ fun AddTimeScreen(
 @CommonPreview
 @Composable
 fun AddTimeScreenPreview() {
-  AddTimeScreen(onPop = {}, state = AddTimeViewState())
+  AddTimeScreen(onPop = {}, state = AddTimeViewState(), validationEvent = MutableSharedFlow())
 }

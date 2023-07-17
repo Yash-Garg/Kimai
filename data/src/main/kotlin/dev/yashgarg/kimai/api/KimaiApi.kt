@@ -10,7 +10,9 @@ import dev.yashgarg.kimai.models.Activity
 import dev.yashgarg.kimai.models.Customer
 import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.models.TimesheetActivity
+import dev.yashgarg.kimai.models.TimesheetBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -54,12 +56,7 @@ interface KimaiApi {
   @POST("timesheets")
   /** Creates a new timesheet record */
   suspend fun createTimesheet(
-    @Query("begin") begin: String,
-    @Query("end") end: String? = null,
-    @Query("description") description: String? = null,
-    @Query("tags") tags: List<String>? = null,
-    @Query("project") project: Int? = null,
-    @Query("activity") activity: Int? = null,
+    @Body timesheet: TimesheetBody,
   ): Response<TimesheetActivity>
 
   companion object {

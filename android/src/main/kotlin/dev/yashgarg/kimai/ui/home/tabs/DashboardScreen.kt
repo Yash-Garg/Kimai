@@ -9,6 +9,7 @@ package dev.yashgarg.kimai.ui.home.tabs
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.yashgarg.kimai.ui.common.Center
@@ -23,7 +24,9 @@ fun DashboardScreen(state: HomeState) {
       is ActivityState.Loading -> {
         Center { LinearProgressIndicator() }
       }
-      is ActivityState.Success -> {}
+      is ActivityState.Success -> {
+        Center { Text(text = "Dashboard") }
+      }
     }
   }
 }

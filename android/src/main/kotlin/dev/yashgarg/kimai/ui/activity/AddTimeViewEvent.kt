@@ -7,9 +7,9 @@
 package dev.yashgarg.kimai.ui.activity
 
 sealed class AddTimeViewEvent {
-  data class DateSelected(val date: String) : AddTimeViewEvent()
+  data class DateSelected(val date: Long) : AddTimeViewEvent()
 
-  data class StartTimeSelected(val time: String) : AddTimeViewEvent()
+  data class StartTimeSelected(val time: Long) : AddTimeViewEvent()
 
   data class DurationSelected(val duration: String) : AddTimeViewEvent()
 

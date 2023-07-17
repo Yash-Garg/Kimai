@@ -13,10 +13,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.yashgarg.kimai.api.KimaiRepository
+import dev.yashgarg.kimai.toOnlyDate
+import dev.yashgarg.kimai.toTime
+import dev.yashgarg.kimai.ui.common.ValidationEvent
 import dev.yashgarg.kimai.util.ApiError
 import dev.yashgarg.kimai.util.ApiException
 import dev.yashgarg.kimai.util.ApiSuccess
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -27,6 +33,9 @@ constructor(
 ) : ViewModel() {
   var state by mutableStateOf(AddTimeViewState())
     private set
+
+  private val _event = MutableSharedFlow<ValidationEvent>()
+  val event: SharedFlow<ValidationEvent> = _event.asSharedFlow()
 
   init {
     viewModelScope.launch { loadFieldData() }
@@ -103,16 +112,40 @@ constructor(
   }
 
   private fun submitActivity() {
-    // TODO
-    val startDtMillis = state.selectedDate!!.toLong()
+    viewModelScope.launch { _event.emit(ValidationEvent.Loading) }
+    val startDt = "${state.selectedDate?.toOnlyDate()}T${state.selectedStartTime?.toTime()}"
+    val endTime =
+      state.selectedStartTime!!.plus(
+        state.durations[state.selectedDuration!!]!!.inWholeMilliseconds
+      )
+    val endDt = "${state.selectedDate?.toOnlyDate()}T${endTime.toTime()}"
+    val projectId =
+      state.projects
+        .first { it.parentTitle == state.selectedCustomer && it.name == state.selectedProject }
+        .id
+        .toInt()
+    val activityId = state.activities.first { it.name == state.selectedActivity }.id.toInt()
+
     viewModelScope.launch {
-      //      val result = repository.createTimeSheet(
-      //        begin = startDate,
-      //        end = endDate,
-      //        project = state.projects.first { it.name == state.selectedProject }.id.toInt(),
-      //        activity = state.activities.first { it.name == state.selectedActivity }.id.toInt(),
-      //        description = state.description,
-      //      )
+      val result =
+        repository.createTimeSheet(
+          begin = startDt,
+          end = endDt,
+          project = projectId,
+          activity = activityId,
+        )
+
+      when (result) {
+        is ApiSuccess -> {
+          _event.emit(ValidationEvent.Success)
+        }
+        is ApiError -> {
+          _event.emit(ValidationEvent.Failure(result.message ?: "Unknown error"))
+        }
+        is ApiException -> {
+          _event.emit(ValidationEvent.Failure(result.e.toString()))
+        }
+      }
     }
   }
 }

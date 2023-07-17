@@ -10,6 +10,7 @@ import dev.yashgarg.kimai.models.Activity
 import dev.yashgarg.kimai.models.Customer
 import dev.yashgarg.kimai.models.Ping
 import dev.yashgarg.kimai.models.TimesheetActivity
+import dev.yashgarg.kimai.models.TimesheetBody
 import dev.yashgarg.kimai.util.ApiResult
 import dev.yashgarg.kimai.util.handleApi
 import javax.inject.Inject
@@ -55,18 +56,11 @@ class KimaiRepositoryImpl @Inject constructor(private val api: KimaiApi) : Kimai
   override suspend fun createTimeSheet(
     begin: String,
     end: String?,
-    description: String?,
-    tags: List<String>?,
-    project: Int?,
-    activity: Int?
+    project: Int,
+    activity: Int
   ): ApiResult<TimesheetActivity> = handleApi {
     api.createTimesheet(
-      begin = begin,
-      end = end,
-      description = description,
-      tags = tags,
-      project = project,
-      activity = activity
+      TimesheetBody(begin = begin, end = end, project = project, activity = activity)
     )
   }
 }
