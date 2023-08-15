@@ -1,0 +1,78 @@
+[versions]
+activity-compose = "1.7.2"
+agp = "8.1.0"
+compose-bom = "2023.08.00"
+core-ktx = "1.10.1"
+kotlin = "1.9.0"
+room = "2.5.2"
+serialization = "1.5.1"
+spotless = "6.19.0"
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+androidx-lifecycle-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
+build-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+build-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-compiler = "androidx.compose.compiler:compiler:1.5.1"
+compose-material = "androidx.compose.material:material:1.5.0"
+compose-material-icons = "androidx.compose.material:material-icons-extended:1.5.0"
+compose-material3 = "androidx.compose.material3:material3:1.2.0-alpha05"
+compose-navigation = "androidx.navigation:navigation-compose:2.7.0"
+compose-navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.0.0"
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
+
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+square-circuit = "com.slack.circuit:circuit-foundation:0.12.1"
+square-moshi = "com.squareup.moshi:moshi-kotlin:1.14.0"
+square-moshi-converter = "com.squareup.retrofit2:converter-moshi:2.9.0"
+square-moshi-metadata-reflect = "dev.zacsweers.moshix:moshi-metadata-reflect:0.21.0"
+square-okhttp-logging = "com.squareup.okhttp3:logging-interceptor:4.11.0"
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+anvil = { id = "com.squareup.anvil", version = "2.4.7-1-8" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinKsp = { id = "com.google.devtools.ksp", version = "1.9.0-1.0.13" }
+whetstone = { id = "dev.msfjarvis.whetstone", version = "0.6.0" }
+
+[bundles]
+androidx = [
+    "androidx-core",
+    "androidx-lifecycle-ktx",
+    "androidx-room-ktx",
+    "androidx-room-runtime",
+]
+compose = [
+    "compose-activity",
+    "compose-material",
+    "compose-material-icons",
+    "compose-material3",
+    "compose-navigation",
+    "compose-navigation-hilt",
+    "compose-ui",
+    "compose-ui-graphics",
+    "compose-ui-tooling-preview",
+    "compose-ui-google-fonts"
+]
+square = [
+    "square-circuit",
+    "square-moshi",
+    "square-moshi-converter",
+    "square-moshi-metadata-reflect",
+    "square-okhttp-logging"
+]
