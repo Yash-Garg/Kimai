@@ -22,8 +22,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@ContributesTo(ApplicationScope::class)
 @Module
+@ContributesTo(ApplicationScope::class)
 object ApiModule {
   @Provides
   @SingleIn(ApplicationScope::class)

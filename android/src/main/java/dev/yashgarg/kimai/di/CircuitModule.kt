@@ -6,25 +6,27 @@
  */
 package dev.yashgarg.kimai.di
 
-import android.content.Context
-import androidx.room.Room
 import com.deliveryhero.whetstone.SingleIn
 import com.deliveryhero.whetstone.app.ApplicationScope
+import com.slack.circuit.foundation.Circuit
+import com.slack.circuit.runtime.presenter.Presenter
+import com.slack.circuit.runtime.ui.Ui
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.yashgarg.kimai.AppDatabase
 
 @Module
 @ContributesTo(ApplicationScope::class)
-class DbModule {
+class CircuitModule {
   @Provides
   @SingleIn(ApplicationScope::class)
-  fun provideRoomDb(@ApplicationContext context: Context) =
-    Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.DB_NAME).build()
-
-  @Provides
-  @SingleIn(ApplicationScope::class)
-  fun provideConfigDao(db: AppDatabase) = db.configDao()
+  fun provideCircuit(
+    presenterFactories: Set<@JvmSuppressWildcards Presenter.Factory>,
+    uiFactories: Set<@JvmSuppressWildcards Ui.Factory>,
+  ): Circuit {
+    return Circuit.Builder()
+      .addPresenterFactories(presenterFactories)
+      .addUiFactories(uiFactories)
+      .build()
+  }
 }
