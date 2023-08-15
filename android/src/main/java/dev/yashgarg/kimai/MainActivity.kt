@@ -13,9 +13,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.view.WindowCompat
 import com.deliveryhero.whetstone.Whetstone
 import com.deliveryhero.whetstone.activity.ContributesActivityInjector
+import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.foundation.CircuitCompositionLocals
+import com.slack.circuit.foundation.NavigableCircuitContent
+import com.slack.circuit.foundation.push
+import com.slack.circuit.foundation.rememberCircuitNavigator
 import dev.yashgarg.kiami.ui.theme.KimaiTheme
+import dev.yashgarg.kimai.ui.screens.LandingScreen
 import javax.inject.Inject
 
 @ContributesActivityInjector
@@ -28,6 +33,15 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
     WindowCompat.setDecorFitsSystemWindows(window, false)
 
-    setContent { KimaiTheme { CompositionLocalProvider { CircuitCompositionLocals(circuit) {} } } }
+    setContent {
+      val backstack = rememberSaveableBackStack { push(LandingScreen) }
+      val navigator = rememberCircuitNavigator(backstack)
+
+      KimaiTheme {
+        CompositionLocalProvider {
+          CircuitCompositionLocals(circuit) { NavigableCircuitContent(navigator, backstack) }
+        }
+      }
+    }
   }
 }

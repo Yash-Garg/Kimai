@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.whetstone)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -70,6 +71,8 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":preferences"))
 
+    api(libs.square.circuit.codegen.annotations)
+    ksp(libs.square.circuit.codegen)
     ksp(libs.androidx.room.compiler)
 
     debugImplementation(libs.compose.ui.tooling)

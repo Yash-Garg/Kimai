@@ -36,6 +36,8 @@ compose-ui-google-fonts = { group = "androidx.compose.ui", name = "ui-text-googl
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 square-circuit = "com.slack.circuit:circuit-foundation:0.12.1"
+square-circuit-codegen = "com.slack.circuit:circuit-codegen:0.12.1"
+square-circuit-codegen-annotations = "com.slack.circuit:circuit-codegen-annotations:0.12.1"
 square-moshi = "com.squareup.moshi:moshi-kotlin:1.14.0"
 square-moshi-converter = "com.squareup.retrofit2:converter-moshi:2.9.0"
 square-moshi-metadata-reflect = "dev.zacsweers.moshix:moshi-metadata-reflect:0.21.0"
