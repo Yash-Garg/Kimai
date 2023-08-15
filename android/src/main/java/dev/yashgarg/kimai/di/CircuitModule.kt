@@ -6,27 +6,24 @@
  */
 package dev.yashgarg.kimai.di
 
-import com.deliveryhero.whetstone.SingleIn
 import com.deliveryhero.whetstone.app.ApplicationScope
 import com.slack.circuit.foundation.Circuit
-import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuit.runtime.ui.Ui
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
+import dev.yashgarg.kimai.ui.presenters.LandingPresenterFactory
+import dev.yashgarg.kimai.ui.screens.LandingUiFactory
 
 @Module
 @ContributesTo(ApplicationScope::class)
-class CircuitModule {
-  @Provides
-  @SingleIn(ApplicationScope::class)
-  fun provideCircuit(
-    presenterFactories: Set<@JvmSuppressWildcards Presenter.Factory>,
-    uiFactories: Set<@JvmSuppressWildcards Ui.Factory>,
-  ): Circuit {
-    return Circuit.Builder()
-      .addPresenterFactories(presenterFactories)
-      .addUiFactories(uiFactories)
-      .build()
+interface CircuitModule {
+  companion object {
+    @Provides
+    fun provideCircuit(): Circuit {
+      return Circuit.Builder()
+        .addPresenterFactories(listOf(LandingPresenterFactory()))
+        .addUiFactories(listOf(LandingUiFactory()))
+        .build()
+    }
   }
 }

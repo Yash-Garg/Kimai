@@ -32,6 +32,8 @@ dependencies {
 
     implementation(libs.bundles.square)
     implementation(libs.androidx.room.ktx)
+    api(libs.square.circuit.codegen.annotations)
+    ksp(libs.square.circuit.codegen)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.kotlinx.serialization)
