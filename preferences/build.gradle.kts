@@ -9,6 +9,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKsp)
 }
 
 android {
@@ -23,4 +24,8 @@ android {
     }
 }
 
-dependencies { implementation(libs.androidx.core) }
+dependencies {
+    implementation(libs.androidx.core)
+    api(libs.square.circuit.codegen.annotations)
+    ksp(libs.square.circuit.codegen)
+}

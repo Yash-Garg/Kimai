@@ -6,9 +6,10 @@
  */
 package dev.yashgarg.kimai
 
+import android.content.SharedPreferences
+import javax.inject.Inject
 
-
-
-// import javax.inject.Inject
-//
-// class AppPreferences @Inject constructor(private val sharedPrefs: SharedPreferences) {}
+class AppPreferences @Inject constructor(private val sharedPrefs: SharedPreferences) {
+  val all: Map<String, *>
+    get() = sharedPrefs.all
+}

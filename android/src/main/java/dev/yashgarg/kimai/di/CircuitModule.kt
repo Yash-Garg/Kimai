@@ -11,7 +11,9 @@ import com.slack.circuit.foundation.Circuit
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
+import dev.yashgarg.kimai.ui.presenters.AuthPresenterFactory
 import dev.yashgarg.kimai.ui.presenters.LandingPresenterFactory
+import dev.yashgarg.kimai.ui.screens.AuthUiFactory
 import dev.yashgarg.kimai.ui.screens.LandingUiFactory
 
 @Module
@@ -20,9 +22,21 @@ interface CircuitModule {
   companion object {
     @Provides
     fun provideCircuit(): Circuit {
+      val presenterFactories =
+        listOf(
+          LandingPresenterFactory(),
+          AuthPresenterFactory(),
+        )
+
+      val uiFactories =
+        listOf(
+          LandingUiFactory(),
+          AuthUiFactory(),
+        )
+
       return Circuit.Builder()
-        .addPresenterFactories(listOf(LandingPresenterFactory()))
-        .addUiFactories(listOf(LandingUiFactory()))
+        .addPresenterFactories(presenterFactories)
+        .addUiFactories(uiFactories)
         .build()
     }
   }
