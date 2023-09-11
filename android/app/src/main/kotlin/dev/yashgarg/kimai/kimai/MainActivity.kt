@@ -1,4 +1,4 @@
-package dev.yashgarg.kimai.kimai
+package dev.yashgarg.kimai
 
 import io.flutter.embedding.android.FlutterActivity
 
