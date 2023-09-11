@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kimai/ui/landing/landing_page.dart';
 
 class KimaiApp extends StatefulWidget {
   const KimaiApp({super.key});
@@ -13,7 +15,7 @@ class _KimaiAppState extends State<KimaiApp> {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.dark.copyWith(
+      SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.transparent,
       ),
@@ -28,13 +30,13 @@ class _KimaiAppState extends State<KimaiApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(useMaterial3: true),
-      debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: Center(
-          child: Text('KIMAI'),
-        ),
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        fontFamily: GoogleFonts.rubik().fontFamily,
       ),
+      debugShowCheckedModeBanner: false,
+      home: const LandingPage(),
     );
   }
 }

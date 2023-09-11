@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 extension BuildContextExtensions on BuildContext {
@@ -18,4 +19,16 @@ extension BuildContextExtensions on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
 
   ModalRoute<dynamic>? get modalRoute => ModalRoute.of(this);
+}
+
+extension WidgetExtensions on Widget {
+  Route<dynamic> get _cRoute => CupertinoPageRoute<dynamic>(
+        builder: (_) => this,
+      );
+
+  Route<dynamic> get _mRoute => MaterialPageRoute<dynamic>(
+        builder: (_) => this,
+      );
+
+  Route<dynamic> route({bool material = true}) => material ? _mRoute : _cRoute;
 }
