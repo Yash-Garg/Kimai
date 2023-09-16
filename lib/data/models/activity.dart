@@ -7,6 +7,7 @@ part '../../generated/data/models/activity.g.dart';
 @freezed
 class Activity with _$Activity {
   const factory Activity({
+    String? parentTitle,
     required int id,
     required String name,
     required String? comment,

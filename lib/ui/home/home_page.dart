@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kimai/di/injectable.dart';
 import 'package:kimai/ui/home/cubit/home_cubit.dart';
-import 'package:kimai/ui/home/tabs/times_page.dart';
+import 'package:kimai/ui/home/tabs/my_times/times_page.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +13,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    _pageController = PageController(initialPage: 0);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -34,15 +48,18 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          body: [
-            Center(child: Text('My Times')),
-            MyTimesPage(),
-            Center(child: Text('Calendar')),
-          ][selIndex],
+          body: PageView(
+            controller: _pageController,
+            physics: BouncingScrollPhysics(),
+            onPageChanged: (index) => getIt<HomeCubit>().changePage(index),
+            children: const [
+              Center(child: Text('Dashboard')),
+              MyTimesPage(),
+              Center(child: Text('Calendar')),
+            ],
+          ),
           bottomNavigationBar: NavigationBar(
-            onDestinationSelected: (index) => getIt<HomeCubit>().changePage(
-              index,
-            ),
+            onDestinationSelected: (index) => _pageController.jumpToPage(index),
             selectedIndex: selIndex,
             destinations: const <Widget>[
               NavigationDestination(

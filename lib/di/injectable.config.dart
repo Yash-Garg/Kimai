@@ -16,11 +16,12 @@ import 'package:isar/isar.dart' as _i5;
 
 import '../data/api/kimai_repository.dart' as _i6;
 import '../data/api/kimai_repository_impl.dart' as _i7;
-import '../data/app_db.dart' as _i8;
-import '../ui/common/bloc/authentication_bloc.dart' as _i9;
-import '../ui/connect/cubit/connection_cubit.dart' as _i10;
+import '../data/app_db.dart' as _i9;
+import '../ui/common/bloc/authentication_bloc.dart' as _i10;
+import '../ui/connect/cubit/connection_cubit.dart' as _i11;
 import '../ui/home/cubit/home_cubit.dart' as _i4;
-import 'injectable_module.dart' as _i11;
+import '../ui/home/tabs/my_times/cubit/times_cubit.dart' as _i8;
+import 'injectable_module.dart' as _i12;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -42,15 +43,17 @@ Future<_i1.GetIt> $initGetIt(
   );
   gh.lazySingleton<_i6.KimaiRepository>(
       () => _i7.KimaiRepositoryImpl(dio: gh<_i3.Dio>()));
-  gh.lazySingleton<_i8.AppDatabase>(
-      () => _i8.AppDatabase(isar: gh<_i5.Isar>()));
-  gh.lazySingleton<_i9.AuthenticationBloc>(
-      () => _i9.AuthenticationBloc(db: gh<_i8.AppDatabase>()));
-  gh.lazySingleton<_i10.ConnectionCubit>(() => _i10.ConnectionCubit(
-        authenticationBloc: gh<_i9.AuthenticationBloc>(),
+  gh.lazySingleton<_i8.TimesCubit>(
+      () => _i8.TimesCubit(repository: gh<_i6.KimaiRepository>()));
+  gh.lazySingleton<_i9.AppDatabase>(
+      () => _i9.AppDatabase(isar: gh<_i5.Isar>()));
+  gh.lazySingleton<_i10.AuthenticationBloc>(
+      () => _i10.AuthenticationBloc(db: gh<_i9.AppDatabase>()));
+  gh.lazySingleton<_i11.ConnectionCubit>(() => _i11.ConnectionCubit(
+        authenticationBloc: gh<_i10.AuthenticationBloc>(),
         repository: gh<_i6.KimaiRepository>(),
       ));
   return getIt;
 }
 
-class _$InjectableModule extends _i11.InjectableModule {}
+class _$InjectableModule extends _i12.InjectableModule {}

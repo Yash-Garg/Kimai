@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kimai/data/api/api_paths.dart';
 import 'package:kimai/data/api/kimai_repository.dart';
 import 'package:kimai/data/models/auth_user.dart';
 import 'package:kimai/data/models/models.dart';
@@ -18,13 +17,11 @@ class KimaiRepositoryImpl implements KimaiRepository {
   @override
   Future<Result<Ping>> ping(AuthUser user) async {
     try {
-      final url = '${user.baseUrl}/api/ping';
+      final url = '${user.baseUrl}${ApiPaths.PING}';
       final headers = {
         'X-AUTH-USER': user.username,
         'X-AUTH-TOKEN': user.token,
       };
-
-      log('pinging url: $url | headers: $headers');
 
       final response = await _dio.get(
         url,
@@ -58,24 +55,66 @@ class KimaiRepositoryImpl implements KimaiRepository {
     String order = 'ASC',
     String? searchTerm,
   }) async {
-    // TODO: implement getActivities
-    throw UnimplementedError();
+    try {
+      final response = await _dio.get(
+        ApiPaths.GET_ACTIVITIES,
+        queryParameters: {
+          if (projectId != null) 'project': projectId,
+          if (projects != null) 'projects': projects,
+          if (globals != null) 'globals': globals,
+          if (orderBy != null) 'orderBy': orderBy,
+          if (searchTerm != null) 'searchTerm': searchTerm,
+          'order': order,
+          'visible': visible,
+        },
+      );
+
+      return Success(
+        (response.data as List).map((e) => Activity.fromJson(e)).toList(),
+      );
+    } on Exception catch (e) {
+      return Failure(e);
+    }
   }
 
   @override
   Future<Result<List<Customer>>> getCustomers({
     int visible = 1,
   }) async {
-    // TODO: implement getCustomers
-    throw UnimplementedError();
+    try {
+      final response = await _dio.get(
+        ApiPaths.GET_CUSTOMERS,
+        queryParameters: {
+          'visible': visible,
+        },
+      );
+
+      return Success(
+        (response.data as List).map((e) => Customer.fromJson(e)).toList(),
+      );
+    } on Exception catch (e) {
+      return Failure(e);
+    }
   }
 
   @override
   Future<Result<List<Activity>>> getProjects({
     int visible = 1,
   }) async {
-    // TODO: implement getProjects
-    throw UnimplementedError();
+    try {
+      final response = await _dio.get(
+        ApiPaths.GET_PROJECTS,
+        queryParameters: {
+          'visible': visible,
+        },
+      );
+
+      return Success(
+        (response.data as List).map((e) => Activity.fromJson(e)).toList(),
+      );
+    } on Exception catch (e) {
+      return Failure(e);
+    }
   }
 
   @override
@@ -83,7 +122,22 @@ class KimaiRepositoryImpl implements KimaiRepository {
     String? orderBy,
     String? order,
   }) async {
-    // TODO: implement getTimeSheets
-    throw UnimplementedError();
+    try {
+      final response = await _dio.get(
+        ApiPaths.GET_TIMESHEETS,
+        queryParameters: {
+          'orderBy': orderBy,
+          'order': order,
+        },
+      );
+
+      return Success(
+        (response.data as List)
+            .map((e) => TimesheetActivity.fromJson(e))
+            .toList(),
+      );
+    } on Exception catch (e) {
+      return Failure(e);
+    }
   }
 }
