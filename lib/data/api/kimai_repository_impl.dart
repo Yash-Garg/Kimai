@@ -3,8 +3,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kimai/data/api/kimai_repository.dart';
-import 'package:kimai/utils/api_result.dart';
+import 'package:kimai/data/models/auth_user.dart';
 import 'package:kimai/data/models/models.dart';
+import 'package:kimai/utils/api_result.dart';
 
 @LazySingleton(as: KimaiRepository)
 class KimaiRepositoryImpl implements KimaiRepository {
@@ -15,24 +16,40 @@ class KimaiRepositoryImpl implements KimaiRepository {
   }) : _dio = dio;
 
   @override
-  Future<ApiResult<Ping>> ping() => handleApi(() {
-        log('calling ping');
-        return _dio.get('/api/ping');
-      });
+  Future<Result<Ping>> ping(AuthUser user) async {
+    try {
+      final url = '${user.baseUrl}/api/ping';
+      final headers = {
+        'X-AUTH-USER': user.username,
+        'X-AUTH-TOKEN': user.token,
+      };
+
+      log('pinging url: $url | headers: $headers');
+
+      final response = await _dio.get(
+        url,
+        options: Options(headers: headers),
+      );
+
+      return Success(Ping.fromJson(response.data));
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 
   @override
-  Future<ApiResult<TimesheetActivity>> createTimeSheet({
+  Future<Result<TimesheetActivity>> createTimeSheet({
     required String begin,
     String? end,
     required int project,
     required int activity,
-  }) {
+  }) async {
     // TODO: implement createTimeSheet
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResult<List<Activity>>> getActivities({
+  Future<Result<List<Activity>>> getActivities({
     int? projectId,
     List<int>? projects,
     int visible = 1,
@@ -40,32 +57,32 @@ class KimaiRepositoryImpl implements KimaiRepository {
     String? orderBy,
     String order = 'ASC',
     String? searchTerm,
-  }) {
+  }) async {
     // TODO: implement getActivities
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResult<List<Customer>>> getCustomers({
+  Future<Result<List<Customer>>> getCustomers({
     int visible = 1,
-  }) {
+  }) async {
     // TODO: implement getCustomers
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResult<List<Activity>>> getProjects({
+  Future<Result<List<Activity>>> getProjects({
     int visible = 1,
-  }) {
+  }) async {
     // TODO: implement getProjects
     throw UnimplementedError();
   }
 
   @override
-  Future<ApiResult<List<TimesheetActivity>>> getTimeSheets({
+  Future<Result<List<TimesheetActivity>>> getTimeSheets({
     String? orderBy,
     String? order,
-  }) {
+  }) async {
     // TODO: implement getTimeSheets
     throw UnimplementedError();
   }

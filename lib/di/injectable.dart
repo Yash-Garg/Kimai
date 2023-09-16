@@ -11,4 +11,4 @@ final getIt = GetIt.instance;
   asExtension: false,
   usesNullSafety: true,
 )
-void configureDependencies() => $initGetIt(getIt);
+Future<void> configureDependencies() => $initGetIt(getIt);

@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscure, isReadOnly;
   final TextInputType? inputType;
   final Function(String?) validator;
+  final Function(String)? onChanged;
   final String? hintText, labelText;
   final Widget? suffixIcon, prefixIcon;
 
@@ -12,6 +13,7 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.validator,
+    this.onChanged,
     this.inputType,
     this.isReadOnly = false,
     this.obscure = false,
@@ -31,6 +33,7 @@ class CustomTextField extends StatelessWidget {
       readOnly: isReadOnly,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (val) => validator(val),
+      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,

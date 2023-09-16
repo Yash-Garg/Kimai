@@ -1,10 +1,11 @@
+import 'package:kimai/data/models/auth_user.dart';
 import 'package:kimai/utils/api_result.dart';
 import 'package:kimai/data/models/models.dart';
 
 abstract class KimaiRepository {
-  Future<ApiResult<Ping>> ping();
+  Future<Result<Ping>> ping(AuthUser user);
 
-  Future<ApiResult<List<Activity>>> getActivities({
+  Future<Result<List<Activity>>> getActivities({
     int? projectId,
     List<int>? projects,
     int visible = 1,
@@ -14,20 +15,20 @@ abstract class KimaiRepository {
     String? searchTerm,
   });
 
-  Future<ApiResult<List<Activity>>> getProjects({
+  Future<Result<List<Activity>>> getProjects({
     int visible = 1,
   });
 
-  Future<ApiResult<List<TimesheetActivity>>> getTimeSheets({
+  Future<Result<List<TimesheetActivity>>> getTimeSheets({
     String? orderBy,
     String? order,
   });
 
-  Future<ApiResult<List<Customer>>> getCustomers({
+  Future<Result<List<Customer>>> getCustomers({
     int visible = 1,
   });
 
-  Future<ApiResult<TimesheetActivity>> createTimeSheet({
+  Future<Result<TimesheetActivity>> createTimeSheet({
     required String begin,
     String? end,
     required int project,

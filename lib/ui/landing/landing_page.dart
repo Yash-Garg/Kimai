@@ -37,9 +37,7 @@ class LandingPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FilledButton.tonal(
-        onPressed: () => context.navigator.push(
-          ConnectionPage().route(material: false),
-        ),
+        onPressed: () => context.navigator.push(ConnectionPage().route()),
         child: Text(
           'Get started',
           style: TextStyle(fontSize: 16),

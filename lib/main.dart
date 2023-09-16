@@ -11,6 +11,6 @@ Future<void> main() async {
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureDependencies();
+  await configureDependencies();
   Bloc.observer = AppBlocObserver();
 }

@@ -32,4 +32,13 @@ nextState: ${change.nextState}
     );
     super.onChange(bloc, change);
   }
+
+  @override
+  void onClose(BlocBase bloc) {
+    log(
+      'onClose: ${bloc.runtimeType}',
+      name: bloc.runtimeType.toString(),
+    );
+    super.onClose(bloc);
+  }
 }

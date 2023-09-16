@@ -7,19 +7,12 @@ sealed class AuthenticationEvent {
 final class AuthInitialized extends AuthenticationEvent {}
 
 class AuthenticationUserUpdated extends AuthenticationEvent {
-  final String baseUrl;
-  final String username;
-  final String token;
+  final AuthUser user;
 
-  const AuthenticationUserUpdated({
-    required this.baseUrl,
-    required this.username,
-    required this.token,
-  });
+  const AuthenticationUserUpdated(this.user);
 
   @override
-  String toString() =>
-      'AuthenticationUserUpdated { baseUrl: $baseUrl, username: $username, token: $token }';
+  String toString() => 'AuthenticationUserUpdated { user: $user }';
 }
 
 final class AuthenticationLogoutRequested extends AuthenticationEvent {}
