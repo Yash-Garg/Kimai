@@ -6,12 +6,11 @@ import 'package:kimai/utils/bloc_observer.dart';
 
 Future<void> main() async {
   await initializeApp();
-
-  Bloc.observer = AppBlocObserver();
   runApp(KimaiApp());
 }
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
+  Bloc.observer = AppBlocObserver();
 }

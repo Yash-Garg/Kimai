@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,14 +30,26 @@ class _KimaiAppState extends State<KimaiApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        fontFamily: GoogleFonts.rubik().fontFamily,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const LandingPage(),
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        return MaterialApp(
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: lightDynamic,
+            brightness: Brightness.light,
+            fontFamily: GoogleFonts.rubik().fontFamily,
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: darkDynamic,
+            brightness: Brightness.dark,
+            fontFamily: GoogleFonts.rubik().fontFamily,
+          ),
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+          home: const LandingPage(),
+        );
+      },
     );
   }
 }

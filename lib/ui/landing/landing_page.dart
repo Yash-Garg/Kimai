@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kimai/ui/auth/authentication_page.dart';
+import 'package:kimai/ui/connect/connection_page.dart';
 import 'package:kimai/utils/assets.dart';
 import 'package:kimai/utils/extensions.dart';
 
@@ -38,7 +38,7 @@ class LandingPage extends StatelessWidget {
       ),
       floatingActionButton: FilledButton.tonal(
         onPressed: () => context.navigator.push(
-          AuthenticationPage().route(material: false),
+          ConnectionPage().route(material: false),
         ),
         child: Text(
           'Get started',
