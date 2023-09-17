@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kimai/di/injectable.dart';
 import 'package:kimai/ui/home/cubit/home_cubit.dart';
-import 'package:kimai/ui/home/tabs/my_times/times_page.dart';
+import 'package:kimai/ui/home/tabs/times_page.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,12 +12,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   late PageController _pageController;
 
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
+    getIt<HomeCubit>().initialize();
     super.initState();
   }
 
@@ -29,6 +31,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: getIt<HomeCubit>(),
       builder: (context, state) {
@@ -83,4 +87,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

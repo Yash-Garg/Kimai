@@ -4,8 +4,7 @@ import 'package:kimai/data/models/screen_status.dart';
 import 'package:kimai/data/models/timesheet_activity.dart';
 import 'package:kimai/di/injectable.dart';
 import 'package:kimai/ui/home/add_activity.dart';
-import 'package:kimai/ui/home/tabs/my_times/cubit/times_cubit.dart';
-import 'package:kimai/ui/home/tabs/my_times/cubit/times_state.dart';
+import 'package:kimai/ui/home/cubit/home_cubit.dart';
 import 'package:kimai/utils/extensions.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -19,26 +18,18 @@ class MyTimesPage extends StatefulWidget {
 class _MyTimesPageState extends State<MyTimesPage>
     with AutomaticKeepAliveClientMixin {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      getIt<TimesCubit>().initialize();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return Scaffold(
-      body: BlocBuilder<TimesCubit, TimesState>(
-        bloc: getIt<TimesCubit>(),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        bloc: getIt<HomeCubit>(),
         builder: (_, state) {
           if (state.status == ScreenStatus.success) {
             final sheets = state.sheets;
 
             return RefreshIndicator.adaptive(
-              onRefresh: () => getIt<TimesCubit>().refresh(),
+              onRefresh: () => getIt<HomeCubit>().refresh(),
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),

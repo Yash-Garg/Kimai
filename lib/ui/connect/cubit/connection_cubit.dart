@@ -54,17 +54,16 @@ class ConnectionCubit extends Cubit<ConnState> {
     );
 
     final result = await _repository.ping(user);
-    switch (result) {
-      case Success<Ping>():
+
+    result.fold(
+      (ping) {
         _authenticationBloc.add(AuthenticationUserUpdated(user));
         emit(state.copyWith(status: ScreenStatus.success));
-        break;
-      case Failure<Ping>():
-        emit(state.copyWith(
-          status: ScreenStatus.failed,
-          error: result.exception.toString(),
-        ));
-        break;
-    }
+      },
+      (err) => emit(state.copyWith(
+        status: ScreenStatus.failed,
+        error: err.toString(),
+      )),
+    );
   }
 }

@@ -1,11 +1,12 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:kimai/data/models/auth_user.dart';
-import 'package:kimai/utils/api_result.dart';
+
 import 'package:kimai/data/models/models.dart';
 
 abstract class KimaiRepository {
-  Future<Result<Ping>> ping(AuthUser user);
+  Future<Either<Ping, Exception>> ping(AuthUser user);
 
-  Future<Result<List<Activity>>> getActivities({
+  Future<Either<List<Activity>, Exception>> getActivities({
     int? projectId,
     List<int>? projects,
     int visible = 1,
@@ -15,20 +16,20 @@ abstract class KimaiRepository {
     String? searchTerm,
   });
 
-  Future<Result<List<Activity>>> getProjects({
+  Future<Either<List<Activity>, Exception>> getProjects({
     int visible = 1,
   });
 
-  Future<Result<List<TimesheetActivity>>> getTimeSheets({
+  Future<Either<List<TimesheetActivity>, Exception>> getTimeSheets({
     String? orderBy,
     String? order,
   });
 
-  Future<Result<List<Customer>>> getCustomers({
+  Future<Either<List<Customer>, Exception>> getCustomers({
     int visible = 1,
   });
 
-  Future<Result<TimesheetActivity>> createTimeSheet({
+  Future<Either<TimesheetActivity, Exception>> createTimeSheet({
     required String begin,
     String? end,
     required int project,

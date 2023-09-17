@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kimai/data/api/api_paths.dart';
 import 'package:kimai/data/api/kimai_repository.dart';
 import 'package:kimai/data/models/auth_user.dart';
 import 'package:kimai/data/models/models.dart';
-import 'package:kimai/utils/api_result.dart';
 
 @LazySingleton(as: KimaiRepository)
 class KimaiRepositoryImpl implements KimaiRepository {
@@ -15,7 +15,7 @@ class KimaiRepositoryImpl implements KimaiRepository {
   }) : _dio = dio;
 
   @override
-  Future<Result<Ping>> ping(AuthUser user) async {
+  Future<Either<Ping, Exception>> ping(AuthUser user) async {
     try {
       final url = '${user.baseUrl}${ApiPaths.PING}';
       final headers = {
@@ -28,14 +28,14 @@ class KimaiRepositoryImpl implements KimaiRepository {
         options: Options(headers: headers),
       );
 
-      return Success(Ping.fromJson(response.data));
+      return left(Ping.fromJson(response.data));
     } on Exception catch (e) {
-      return Failure(e);
+      return right(e);
     }
   }
 
   @override
-  Future<Result<TimesheetActivity>> createTimeSheet({
+  Future<Either<TimesheetActivity, Exception>> createTimeSheet({
     required String begin,
     String? end,
     required int project,
@@ -46,7 +46,7 @@ class KimaiRepositoryImpl implements KimaiRepository {
   }
 
   @override
-  Future<Result<List<Activity>>> getActivities({
+  Future<Either<List<Activity>, Exception>> getActivities({
     int? projectId,
     List<int>? projects,
     int visible = 1,
@@ -69,16 +69,16 @@ class KimaiRepositoryImpl implements KimaiRepository {
         },
       );
 
-      return Success(
+      return left(
         (response.data as List).map((e) => Activity.fromJson(e)).toList(),
       );
     } on Exception catch (e) {
-      return Failure(e);
+      return right(e);
     }
   }
 
   @override
-  Future<Result<List<Customer>>> getCustomers({
+  Future<Either<List<Customer>, Exception>> getCustomers({
     int visible = 1,
   }) async {
     try {
@@ -89,16 +89,16 @@ class KimaiRepositoryImpl implements KimaiRepository {
         },
       );
 
-      return Success(
+      return left(
         (response.data as List).map((e) => Customer.fromJson(e)).toList(),
       );
     } on Exception catch (e) {
-      return Failure(e);
+      return right(e);
     }
   }
 
   @override
-  Future<Result<List<Activity>>> getProjects({
+  Future<Either<List<Activity>, Exception>> getProjects({
     int visible = 1,
   }) async {
     try {
@@ -109,16 +109,16 @@ class KimaiRepositoryImpl implements KimaiRepository {
         },
       );
 
-      return Success(
+      return left(
         (response.data as List).map((e) => Activity.fromJson(e)).toList(),
       );
     } on Exception catch (e) {
-      return Failure(e);
+      return right(e);
     }
   }
 
   @override
-  Future<Result<List<TimesheetActivity>>> getTimeSheets({
+  Future<Either<List<TimesheetActivity>, Exception>> getTimeSheets({
     String? orderBy,
     String? order,
   }) async {
@@ -131,13 +131,13 @@ class KimaiRepositoryImpl implements KimaiRepository {
         },
       );
 
-      return Success(
+      return left(
         (response.data as List)
             .map((e) => TimesheetActivity.fromJson(e))
             .toList(),
       );
     } on Exception catch (e) {
-      return Failure(e);
+      return right(e);
     }
   }
 }
