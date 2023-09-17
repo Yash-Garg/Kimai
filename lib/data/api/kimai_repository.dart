@@ -35,4 +35,6 @@ abstract class KimaiRepository {
     required int project,
     required int activity,
   });
+
+  Future<Either<UserEntity, Exception>> getMyUser();
 }

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kimai/di/injectable.dart';
 import 'package:kimai/ui/home/cubit/home_cubit.dart';
+import 'package:kimai/ui/home/tabs/dash_page.dart';
 import 'package:kimai/ui/home/tabs/times_page.dart';
+import 'package:kimai/ui/settings/settings_page.dart';
+import 'package:kimai/utils/extensions.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,9 +50,10 @@ class _HomePageState extends State<HomePage>
             ][selIndex],
             actions: [
               IconButton(
-                icon: Icon(LucideIcons.settings2),
-                onPressed: () {},
-              ),
+                  icon: Icon(LucideIcons.settings2),
+                  onPressed: () => context.navigator.push(
+                        SettingsPage().route(material: false),
+                      )),
             ],
           ),
           body: PageView(
@@ -57,7 +61,7 @@ class _HomePageState extends State<HomePage>
             physics: BouncingScrollPhysics(),
             onPageChanged: (index) => getIt<HomeCubit>().changePage(index),
             children: const [
-              Center(child: Text('Dashboard')),
+              DashboardPage(),
               MyTimesPage(),
               Center(child: Text('Calendar')),
             ],

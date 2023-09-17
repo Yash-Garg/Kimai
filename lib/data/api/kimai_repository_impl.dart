@@ -153,4 +153,15 @@ class KimaiRepositoryImpl implements KimaiRepository {
       return right(e);
     }
   }
+
+  @override
+  Future<Either<UserEntity, Exception>> getMyUser() async {
+    try {
+      final response = await _dio.get(ApiPaths.GET_ME);
+
+      return left(UserEntity.fromJson(response.data));
+    } on Exception catch (e) {
+      return right(e);
+    }
+  }
 }

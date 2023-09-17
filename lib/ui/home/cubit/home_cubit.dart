@@ -18,6 +18,10 @@ class HomeCubit extends Cubit<HomeState> {
 
   void initialize() async {
     emit(state.copyWith(status: ScreenStatus.loading));
+    await loadUser();
+    await loadProjects();
+    await loadActivities();
+    await loadCustomers();
     refresh();
   }
 
@@ -73,11 +77,20 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> loadUser() async {
+    final response = await _repository.getMyUser();
+
+    response.fold(
+      (user) => emit(state.copyWith(user: user)),
+      (err) => emit(state.copyWith(
+        status: ScreenStatus.failed,
+        error: err.toString(),
+      )),
+    );
+  }
+
   Future<void> refresh() async {
     await loadTimesheets();
-    await loadProjects();
-    await loadActivities();
-    await loadCustomers();
     emit(state.copyWith(status: ScreenStatus.success));
   }
 }
