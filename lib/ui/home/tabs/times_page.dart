@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:kimai/data/models/screen_status.dart';
 import 'package:kimai/data/models/timesheet_activity.dart';
 import 'package:kimai/di/injectable.dart';
@@ -62,15 +63,23 @@ class _MyTimesPageState extends State<MyTimesPage>
               : const Center(
                   child: CircularProgressIndicator(),
                 ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => context.navigator.push(
-              AddActivityPage(
-                activities: state.activities,
-                projects: state.projects,
-                customers: state.customers,
-              ).route(material: false),
+          floatingActionButton: AnimatedOpacity(
+            opacity: state.activities.isNotEmpty &&
+                    state.projects.isNotEmpty &&
+                    state.customers.isNotEmpty
+                ? 1.0
+                : .0,
+            duration: Duration(milliseconds: 300),
+            child: FloatingActionButton(
+              onPressed: () => context.navigator.push(
+                AddActivityPage(
+                  activities: state.activities,
+                  projects: state.projects,
+                  customers: state.customers,
+                ).route(material: false),
+              ),
+              child: Icon(LucideIcons.calendarPlus),
             ),
-            child: Icon(LucideIcons.calendarPlus),
           ),
         );
       },
@@ -98,6 +107,10 @@ class _TimeSheetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final date = DateFormat('MMMM dd, yyyy').format(
+      DateTime.parse(sheet.begin),
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -115,12 +128,21 @@ class _TimeSheetCard extends StatelessWidget {
               ),
               enableFeedback: true,
               title: Text('Activity - $activityName'),
-              subtitle: Text(
-                '$projectName ($parentName)',
-                style: TextStyle(fontSize: 16.0),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    date,
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  Text(
+                    '$projectName ($parentName)',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
               ),
               trailing: Text(
-                '${Duration(seconds: sheet.duration).inHours} hours',
+                '${Duration(seconds: sheet.duration).inHours} hour(s)',
                 style: TextStyle(fontSize: 18.0),
               ),
             ),

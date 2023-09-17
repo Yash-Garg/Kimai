@@ -41,8 +41,21 @@ class KimaiRepositoryImpl implements KimaiRepository {
     required int project,
     required int activity,
   }) async {
-    // TODO: implement createTimeSheet
-    throw UnimplementedError();
+    try {
+      final response = await _dio.post(
+        ApiPaths.GET_TIMESHEETS,
+        data: {
+          'begin': begin,
+          if (end != null) 'end': end,
+          'project': project,
+          'activity': activity,
+        },
+      );
+
+      return left(TimesheetActivity.fromJson(response.data));
+    } on Exception catch (e) {
+      return right(e);
+    }
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -98,5 +100,50 @@ class ActivityCubit extends Cubit<ActivityState> {
   void setActivity(int id) {
     final activity = state.activities.firstWhere((e) => e.id == id);
     emit(state.copyWith(activity: activity));
+  }
+
+  void save() async {
+    emit(state.copyWith(status: ScreenStatus.loading));
+
+    if (state.activity == null ||
+        state.project == null ||
+        state.customer == null) {
+      emit(state.copyWith(
+        status: ScreenStatus.failed,
+        error: 'Please select all fields!',
+      ));
+      return;
+    }
+
+    final date = state.date;
+    final time = state.startTime;
+
+    final startDt = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    final endDt = startDt.add(state.duration);
+
+    final response = await _repository.createTimeSheet(
+      begin: startDt.toIso8601String(),
+      end: endDt.toIso8601String(),
+      project: state.project!.id,
+      activity: state.activity!.id,
+    );
+
+    response.fold(
+      (sheet) {
+        log(sheet.toString(), name: 'ActivityCubit');
+        emit(state.copyWith(status: ScreenStatus.success));
+      },
+      (err) => emit(state.copyWith(
+        status: ScreenStatus.failed,
+        error: err.toString(),
+      )),
+    );
   }
 }
