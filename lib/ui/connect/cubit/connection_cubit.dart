@@ -3,11 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kimai/data/api/kimai_repository.dart';
 import 'package:kimai/data/models/auth_user.dart';
-import 'package:kimai/data/models/ping.dart';
 import 'package:kimai/data/models/screen_status.dart';
 import 'package:kimai/data/models/field_status.dart';
 import 'package:kimai/ui/common/bloc/authentication_bloc.dart';
-import 'package:kimai/utils/api_result.dart';
 
 part 'connection_state.dart';
 

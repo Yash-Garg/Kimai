@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kimai/data/models/screen_status.dart';
 import 'package:kimai/data/models/timesheet_activity.dart';
 import 'package:kimai/di/injectable.dart';
-import 'package:kimai/ui/home/add_activity.dart';
+import 'package:kimai/ui/activity/add_activity.dart';
 import 'package:kimai/ui/home/cubit/home_cubit.dart';
 import 'package:kimai/utils/extensions.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -21,55 +21,59 @@ class _MyTimesPageState extends State<MyTimesPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Scaffold(
-      body: BlocBuilder<HomeCubit, HomeState>(
-        bloc: getIt<HomeCubit>(),
-        builder: (_, state) {
-          if (state.status == ScreenStatus.success) {
-            final sheets = state.sheets;
+    return BlocBuilder<HomeCubit, HomeState>(
+      bloc: getIt<HomeCubit>(),
+      builder: (_, state) {
+        return Scaffold(
+          body: state.status == ScreenStatus.success
+              ? RefreshIndicator.adaptive(
+                  onRefresh: () => getIt<HomeCubit>().refresh(),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: state.sheets.length,
+                    itemBuilder: (context, index) {
+                      final sheet = state.sheets[index];
+                      final project = state.projects
+                          .where((customer) => customer.id == sheet.project)
+                          .firstOrNull;
 
-            return RefreshIndicator.adaptive(
-              onRefresh: () => getIt<HomeCubit>().refresh(),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                itemCount: sheets.length,
-                itemBuilder: (context, index) {
-                  final sheet = sheets[index];
-                  final project = state.projects
-                      .where((customer) => customer.id == sheet.project)
-                      .firstOrNull;
+                      final projectName = project?.name ?? 'Unknown Customer';
+                      final parentName =
+                          project?.parentTitle ?? 'Unknown Parent';
 
-                  final projectName = project?.name ?? 'Unknown Customer';
-                  final parentName = project?.parentTitle ?? 'Unknown Parent';
+                      final activityName = state.activities
+                              .where(
+                                  (activity) => activity.id == sheet.activity)
+                              .firstOrNull
+                              ?.name ??
+                          'Unknown Activity';
 
-                  final activityName = state.activities
-                          .where((activity) => activity.id == sheet.activity)
-                          .firstOrNull
-                          ?.name ??
-                      'Unknown Activity';
-
-                  return _TimeSheetCard(
-                    activityName: activityName,
-                    projectName: projectName,
-                    parentName: parentName,
-                    sheet: sheet,
-                    onTap: () {},
-                  );
-                },
-              ),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.navigator.push(
-          AddActivityPage().route(material: false),
-        ),
-        child: Icon(LucideIcons.calendarPlus),
-      ),
+                      return _TimeSheetCard(
+                        activityName: activityName,
+                        projectName: projectName,
+                        parentName: parentName,
+                        sheet: sheet,
+                        onTap: () {},
+                      );
+                    },
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => context.navigator.push(
+              AddActivityPage(
+                activities: state.activities,
+                projects: state.projects,
+                customers: state.customers,
+              ).route(material: false),
+            ),
+            child: Icon(LucideIcons.calendarPlus),
+          ),
+        );
+      },
     );
   }
 

@@ -61,10 +61,23 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> loadCustomers() async {
+    final response = await _repository.getCustomers();
+
+    response.fold(
+      (customers) => emit(state.copyWith(customers: customers)),
+      (err) => emit(state.copyWith(
+        status: ScreenStatus.failed,
+        error: err.toString(),
+      )),
+    );
+  }
+
   Future<void> refresh() async {
     await loadTimesheets();
     await loadProjects();
     await loadActivities();
+    await loadCustomers();
     emit(state.copyWith(status: ScreenStatus.success));
   }
 }

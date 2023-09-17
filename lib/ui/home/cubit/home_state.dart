@@ -4,6 +4,7 @@ class HomeState extends Equatable {
   const HomeState({
     this.sheets = const [],
     this.activities = const [],
+    this.customers = const [],
     this.projects = const [],
     this.status = ScreenStatus.initial,
     this.error,
@@ -13,6 +14,7 @@ class HomeState extends Equatable {
   final List<TimesheetActivity> sheets;
   final List<Activity> activities;
   final List<Activity> projects;
+  final List<Customer> customers;
   final ScreenStatus status;
   final String? error;
   final int currentPageIndex;
@@ -22,6 +24,7 @@ class HomeState extends Equatable {
         sheets,
         activities,
         projects,
+        customers,
         status,
         error,
         currentPageIndex,
@@ -31,6 +34,7 @@ class HomeState extends Equatable {
     List<TimesheetActivity>? sheets,
     List<Activity>? activities,
     List<Activity>? projects,
+    List<Customer>? customers,
     ScreenStatus? status,
     String? error,
     int? currentPageIndex,
@@ -39,6 +43,7 @@ class HomeState extends Equatable {
       sheets: sheets ?? this.sheets,
       activities: activities ?? this.activities,
       projects: projects ?? this.projects,
+      customers: customers ?? this.customers,
       status: status ?? this.status,
       error: error,
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
