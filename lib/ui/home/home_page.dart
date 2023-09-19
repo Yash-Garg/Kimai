@@ -42,29 +42,49 @@ class _HomePageState extends State<HomePage>
         final selIndex = state.currentPageIndex;
 
         return Scaffold(
-          appBar: AppBar(
-            title: [
-              Text('Dashboard'),
-              Text('My Times'),
-              Text('Calendar'),
-            ][selIndex],
-            actions: [
-              IconButton(
-                  icon: Icon(LucideIcons.settings2),
-                  onPressed: () => context.navigator.push(
-                        SettingsPage().route(material: false),
-                      )),
-            ],
-          ),
-          body: PageView(
-            controller: _pageController,
+          body: NestedScrollView(
             physics: BouncingScrollPhysics(),
-            onPageChanged: (index) => getIt<HomeCubit>().changePage(index),
-            children: const [
-              DashboardPage(),
-              MyTimesPage(),
-              Center(child: Text('Calendar')),
-            ],
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverSafeArea(
+                    top: false,
+                    sliver: SliverAppBar.medium(
+                      title: [
+                        Text('Dashboard'),
+                        Text('My Times'),
+                        Text('Calendar'),
+                      ][selIndex],
+                      actions: [
+                        IconButton(
+                          icon: Icon(LucideIcons.settings2),
+                          onPressed: () => context.navigator.push(
+                            SettingsPage().route(material: false),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ];
+            },
+            body: MediaQuery.removePadding(
+              removeTop: true,
+              removeBottom: true,
+              context: context,
+              child: PageView(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (index) => getIt<HomeCubit>().changePage(index),
+                children: const [
+                  DashboardPage(),
+                  MyTimesPage(),
+                  Center(child: Text('Calendar')),
+                ],
+              ),
+            ),
           ),
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: (index) => _pageController.jumpToPage(index),

@@ -11,12 +11,18 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-        titleSpacing: 0,
-      ),
-      body: Center(
-        child: Text('Settings'),
+      body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
+        slivers: const [
+          SliverAppBar.medium(
+            title: Text('Settings'),
+            titleSpacing: 0,
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(child: Text('Settings')),
+          )
+        ],
       ),
     );
   }

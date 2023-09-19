@@ -21,21 +21,29 @@ class _DashboardPageState extends State<DashboardPage> {
           return Center(child: CircularProgressIndicator());
         }
 
+        final user = state.user!;
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    'Welcome, ${state.user?.alias}!\n${state.user?.title}',
+              Card(
+                child: ListTile(
+                  title: Text(
+                    'Welcome, ${user.alias}!',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              )
+                  subtitle: Text(
+                    user.title,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         );

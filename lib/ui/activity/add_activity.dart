@@ -84,114 +84,120 @@ class _AddActivityPageState extends State<AddActivityPage> {
         _startTimeController.text = state.startTime.format(context);
 
         return Scaffold(
-          appBar: AppBar(
-            titleSpacing: 0,
-            title: Text('Create timesheet'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 12.0,
-            ),
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    CustomTextField(
-                      controller: _dateController,
-                      hintText: 'May 17, 2023',
-                      labelText: 'Date',
-                      isReadOnly: true,
-                      suffixIcon: IconButton(
-                        icon: Icon(LucideIcons.calendarClock),
-                        onPressed: () async {
-                          final dt = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now().subtract(
-                                  Duration(days: 365),
-                                ),
-                                lastDate: DateTime.now(),
-                              ) ??
-                              DateTime.now();
+          body: CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar.medium(
+                titleSpacing: 0,
+                title: Text('Create timesheet'),
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 12.0,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          controller: _dateController,
+                          hintText: 'May 17, 2023',
+                          labelText: 'Date',
+                          isReadOnly: true,
+                          suffixIcon: IconButton(
+                            icon: Icon(LucideIcons.calendarClock),
+                            onPressed: () async {
+                              final dt = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now().subtract(
+                                      Duration(days: 365),
+                                    ),
+                                    lastDate: DateTime.now(),
+                                  ) ??
+                                  DateTime.now();
 
-                          getIt<ActivityCubit>().setDate(dt);
-                        },
-                      ),
-                      onChanged: (val) {},
-                      validator: (val) {},
-                    ),
-                    const SizedBox(height: 24),
-                    CustomTextField(
-                      controller: _startTimeController,
-                      hintText: '11:30',
-                      labelText: 'Start Time',
-                      isReadOnly: true,
-                      suffixIcon: IconButton(
-                        icon: Icon(LucideIcons.timer),
-                        onPressed: () async {
-                          final time = await showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.now(),
-                              ) ??
-                              TimeOfDay.now();
+                              getIt<ActivityCubit>().setDate(dt);
+                            },
+                          ),
+                          onChanged: (val) {},
+                          validator: (val) {},
+                        ),
+                        const SizedBox(height: 24),
+                        CustomTextField(
+                          controller: _startTimeController,
+                          hintText: '11:30',
+                          labelText: 'Start Time',
+                          isReadOnly: true,
+                          suffixIcon: IconButton(
+                            icon: Icon(LucideIcons.clock),
+                            onPressed: () async {
+                              final time = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  ) ??
+                                  TimeOfDay.now();
 
-                          getIt<ActivityCubit>().setStartTime(time);
-                        },
-                      ),
-                      validator: (val) {},
+                              getIt<ActivityCubit>().setStartTime(time);
+                            },
+                          ),
+                          validator: (val) {},
+                        ),
+                        const SizedBox(height: 24),
+                        dd.DropdownMenu(
+                          width: context.mediaQuery.size.width - 40,
+                          menuHeight: 300,
+                          enableSearch: false,
+                          label: Text('Duration (in hours)'),
+                          textStyle: TextStyle(fontSize: 16),
+                          initialSelection: state.duration,
+                          dropdownMenuEntries: state.durationEntries,
+                          onSelected: (val) =>
+                              getIt<ActivityCubit>().setDuration(val!),
+                        ),
+                        const SizedBox(height: 24),
+                        dd.DropdownMenu(
+                          width: context.mediaQuery.size.width - 40,
+                          menuHeight: 300,
+                          enableSearch: false,
+                          label: Text('Customer'),
+                          textStyle: TextStyle(fontSize: 16),
+                          dropdownMenuEntries: state.customerEntries,
+                          onSelected: (val) =>
+                              getIt<ActivityCubit>().setCustomer(val!),
+                        ),
+                        const SizedBox(height: 24),
+                        dd.DropdownMenu(
+                          width: context.mediaQuery.size.width - 40,
+                          menuHeight: 300,
+                          enableSearch: false,
+                          label: Text('Project'),
+                          textStyle: TextStyle(fontSize: 16),
+                          dropdownMenuEntries: state.projectEntries,
+                          onSelected: (val) =>
+                              getIt<ActivityCubit>().setProject(val!),
+                        ),
+                        const SizedBox(height: 24),
+                        dd.DropdownMenu(
+                          width: context.mediaQuery.size.width - 40,
+                          menuHeight: 300,
+                          enableSearch: false,
+                          label: Text('Activity'),
+                          textStyle: TextStyle(fontSize: 16),
+                          dropdownMenuEntries: state.activityEntries,
+                          onSelected: (val) =>
+                              getIt<ActivityCubit>().setActivity(val!),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    dd.DropdownMenu(
-                      width: context.mediaQuery.size.width - 40,
-                      menuHeight: 300,
-                      enableSearch: false,
-                      label: Text('Duration (in hours)'),
-                      textStyle: TextStyle(fontSize: 16),
-                      initialSelection: state.duration,
-                      dropdownMenuEntries: state.durationEntries,
-                      onSelected: (val) =>
-                          getIt<ActivityCubit>().setDuration(val!),
-                    ),
-                    const SizedBox(height: 24),
-                    dd.DropdownMenu(
-                      width: context.mediaQuery.size.width - 40,
-                      menuHeight: 300,
-                      enableSearch: false,
-                      label: Text('Customer'),
-                      textStyle: TextStyle(fontSize: 16),
-                      dropdownMenuEntries: state.customerEntries,
-                      onSelected: (val) =>
-                          getIt<ActivityCubit>().setCustomer(val!),
-                    ),
-                    const SizedBox(height: 24),
-                    dd.DropdownMenu(
-                      width: context.mediaQuery.size.width - 40,
-                      menuHeight: 300,
-                      enableSearch: false,
-                      label: Text('Project'),
-                      textStyle: TextStyle(fontSize: 16),
-                      dropdownMenuEntries: state.projectEntries,
-                      onSelected: (val) =>
-                          getIt<ActivityCubit>().setProject(val!),
-                    ),
-                    const SizedBox(height: 24),
-                    dd.DropdownMenu(
-                      width: context.mediaQuery.size.width - 40,
-                      menuHeight: 300,
-                      enableSearch: false,
-                      label: Text('Activity'),
-                      textStyle: TextStyle(fontSize: 16),
-                      dropdownMenuEntries: state.activityEntries,
-                      onSelected: (val) =>
-                          getIt<ActivityCubit>().setActivity(val!),
-                    )
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => getIt<ActivityCubit>().save(),

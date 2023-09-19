@@ -71,9 +71,7 @@ class _KimaiAppState extends State<KimaiApp> {
                 ),
                 orElse: () => null,
               ),
-              child: Center(
-                child: const CircularProgressIndicator(),
-              ),
+              child: Center(child: const CircularProgressIndicator()),
             ),
           ),
         );
